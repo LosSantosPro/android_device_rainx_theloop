@@ -235,9 +235,11 @@ PRODUCT_PROPERTY_OVERRIDES += persist.sys.animator_duration_scale=0.5
 # Force locale to English - Chinese IoT eSIM MCC overrides during setup otherwise
 PRODUCT_LOCALES := en_GB
 
-# Release signing keys
-PRODUCT_DEFAULT_DEV_CERTIFICATE := device/rainx/theloop/.keys/releasekey
-PRODUCT_EXTRA_RECOVERY_KEYS := device/rainx/theloop/.keys/releasekey
+# Signing: build with test keys, re-sign with private keys post-build.
+# Use: sign_target_files_apks -o -d device/rainx/theloop/.keys \
+#   out/target/product/theloop/obj/PACKAGING/target_files_intermediates/*-target_files*.zip \
+#   signed-target_files.zip
+# Then: ota_from_target_files signed-target_files.zip signed-ota.zip
 
 
 # USB Audio Gadget
