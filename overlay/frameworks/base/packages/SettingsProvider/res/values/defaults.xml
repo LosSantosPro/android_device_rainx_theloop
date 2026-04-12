@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="def_screen_off_timeout">300000</integer>
+    <bool name="def_screen_brightness_automatic_mode">true</bool>
+    <bool name="def_haptic_feedback">false</bool>
+    <bool name="def_sound_effects_enabled">false</bool>
+    <integer name="def_lockscreen_sounds_enabled">0</integer>
+    <bool name="def_lockscreen_disabled">false</bool>
+    <integer name="def_stay_on_while_plugged_in">7</integer>
+    <bool name="def_charging_sounds_enabled">false</bool>
+    <bool name="def_screensaver_enabled">false</bool>
+    <string name="def_locale" translatable="false">en-GB</string>
+</resources>

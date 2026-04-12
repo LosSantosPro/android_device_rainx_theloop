@@ -1,0 +1,32 @@
+# Create /dev/radio for gsm0710muxd PTY symlinks.
+# Stock init.mt6877.rc creates this in on post-fs-data, but wait_for_prop
+# vendor.all.modules.ready blocks and the mkdir never executes.
+on post-fs
+    mkdir /dev/radio 0770 radio radio
+
+# Disable TrustKernel keymint (TEE RPMB key verification fails on custom ROM)
+# Use AOSP software keymint instead
+service vendor.keymint-3-0-trustkernel /vendor/bin/hw/android.hardware.security.keymint@3.0-service.trustkernel
+    override
+    disabled
+
+# Disable TrustKernel gatekeeper (same TEE dependency)
+service vendor.gatekeeper /vendor/bin/hw/android.hardware.gatekeeper-service.trustkernel
+    override
+    disabled
+
+# Disable AOSP generic rild (not present on stock, can't talk to MTK modem).
+# MTK modem uses vendor.ril-daemon-mtk (mtkfusionrild) from mtkrild.rc instead.
+service vendor.ril-daemon /vendor/bin/hw/rild
+    override
+    disabled
+
+# NOTE: media.c2-mediatek override removed. The mediatek c2 .rc is no longer
+# installed by theloop-vendor.mk (PRODUCT_COPY_FILES entry removed) so there
+# is nothing left to override. The AOSP android.hardware.media.c2-default-service
+# stub now owns the `android-hardware-media-c2-hal` init service name and
+# starts cleanly. If we left the override here, init would replace the stub's
+# definition with this disabled one and break boot all over again.
+
+# NOTE: audio_parameter_parser_service and vtservice overrides are in
+# init.sysext_override.rc (system_ext partition) - override doesn't work cross-partition.

@@ -1,0 +1,21 @@
+# Overrides for system_ext services that crash on custom ROM
+# Must be installed to system_ext partition (override doesn't work cross-partition)
+
+# Disable location debug service (missing libhidltransport.so - HIDL removed in A15)
+service lbs_dbg_ext /system_ext/bin/lbs_dbg_ext
+    override
+    disabled
+
+# Disable video telephony service (missing vendor.mediatek.hardware.videotelephony-V1-ndk.so)
+service vtservice /system_ext/bin/vtservice
+    override
+    disabled
+
+# audio_parameter_parser_service re-enabled 2026-04-08.
+# Previously overridden/disabled because the stock binary NEEDs
+# android.hardware.audio.core-V2-ndk.so and LOS A15 only ships V3 in
+# /system/lib64. Fix: the V2 blob is also installed to
+# /system_ext/lib64/ via theloop-vendor.mk PRODUCT_COPY_FILES, so the
+# system linker namespace used by /system_ext/bin/hw executables can
+# resolve it. Without this service the MTK audio HAL reports
+# MTK_SPK_TYPE=DUMMYPA and no audio reaches the speaker amp.

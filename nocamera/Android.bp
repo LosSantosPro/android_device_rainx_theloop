@@ -1,0 +1,10 @@
+// Stub app that suppresses Camera2 via Soong overrides.
+// This is in its own directory to avoid the parent soong_namespace.
+android_app {
+    name: "NoCameraStub",
+    overrides: ["Camera2", "DeviceAsWebcam", "CameraExtensions"],
+    srcs: ["src/**/*.java"],
+    manifest: "AndroidManifest.xml",
+    platform_apis: true,
+    certificate: "platform",
+}

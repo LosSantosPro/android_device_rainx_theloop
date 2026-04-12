@@ -1,0 +1,6 @@
+# /proc/bootprof write access for vendor_init.
+# vendor_init writes "INIT:<stage>" markers from init.mt6877.rc;
+# the kernel timestamps each one for boot profiling.
+# Write-only; vendor_init never reads this node.
+
+allow vendor_init proc_bootprof:file { open write append };

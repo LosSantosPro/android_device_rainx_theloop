@@ -1,0 +1,37 @@
+<manifest version="8.0" type="device">
+    <!-- MTK AIDL audio HAL override. Replaces the proprietary fragment
+         (missing soundtrigger3) and removes the broken IModule/usb entry
+         that causes audioserver to block indefinitely.
+         soundtrigger3 must be declared here or servicemanager rejects
+         the HAL's addService call (meetsDeclarationRequirements). -->
+    <hal format="aidl">
+        <name>android.hardware.audio.core</name>
+        <version>2</version>
+        <fqname>IModule/default</fqname>
+    </hal>
+    <hal format="aidl">
+        <name>android.hardware.audio.core</name>
+        <version>2</version>
+        <fqname>IModule/r_submix</fqname>
+    </hal>
+    <hal format="aidl">
+        <name>android.hardware.audio.core</name>
+        <version>2</version>
+        <fqname>IModule/bluetooth</fqname>
+    </hal>
+    <hal format="aidl">
+        <name>android.hardware.audio.core</name>
+        <version>2</version>
+        <fqname>IConfig/default</fqname>
+    </hal>
+    <hal format="aidl">
+        <name>android.hardware.audio.effect</name>
+        <version>2</version>
+        <fqname>IFactory/default</fqname>
+    </hal>
+    <hal format="aidl">
+        <name>android.hardware.soundtrigger3</name>
+        <version>2</version>
+        <fqname>ISoundTriggerHw/default</fqname>
+    </hal>
+</manifest>

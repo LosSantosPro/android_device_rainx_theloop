@@ -1,0 +1,38 @@
+# Radio - DSDS for dual eSIM (stock defaults to "ss")
+persist.radio.multisim.config=dsds
+ro.telephony.sim.count=2
+
+# eSIM - preserve profiles across factory reset (matches stock behavior)
+masterclear.allow_retain_esim_profiles_after_fdr=1
+
+# FM Radio - mt6635 tuner, short-antenna mode (no 3.5mm jack).
+# persist.vendor.connsys.* read by MTK prebuilt libfmjni;
+# ro.fm.* read by AOSP source-built libfmjni as fallback.
+persist.vendor.connsys.fm_chipid=mt6635
+persist.vendor.connsys.fm_short_antenna_support=1
+ro.fm.chip=0x6635
+ro.fm.band=0
+ro.fm.low_band=875
+ro.fm.high_band=1080
+ro.fm.seek_space=1
+ro.fm.max_scan_num=40
+ro.fm.short_ana_sup=1
+
+# Display - force software navbar; mtk-tpd KEY bitmap falsely reports hw nav keys
+qemu.hw.mainkeys=0
+
+# Miscellaneous
+persist.wm.extensions.enabled=true
+remote_provisioning.enable_rkpd=true
+remote_provisioning.hostname=remoteprovisioning.googleapis.com
+remote_provisioning.strongbox.rkp_only=true
+ro.com.google.acsa=true
+ro.com.google.gmsversion=15_202507
+ro.crypto.metadata_init_delete_all_keys.enabled=true
+ro.opa.eligible_device=true
+ro.product.build.16k_page.enabled=false
+ro.product.build.no_bionic_page_size_macro=true
+ro.setupwizard.enable_bypass=true
+ro.setupwizard.rotation_locked=true
+setupwizard.feature.checkin_timeout_enabled=false
+

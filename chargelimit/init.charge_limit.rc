@@ -1,0 +1,12 @@
+service charge_limit /vendor/bin/sh /vendor/bin/charge_limit.sh
+    class late_start
+    user root
+    group root
+    disabled
+    seclabel u:r:charge_limit:s0
+
+on property:persist.vendor.charge_limit=*
+    restart charge_limit
+
+on boot
+    start charge_limit

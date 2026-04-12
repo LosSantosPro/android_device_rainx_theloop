@@ -1,0 +1,12 @@
+service usb_audio_loopback /vendor/bin/usb_audio_loopback
+    class main
+    user root
+    group audio
+    disabled
+    oneshot
+
+on property:vendor.usb.audio.loopback=1
+    start usb_audio_loopback
+
+on property:vendor.usb.audio.loopback=0
+    stop usb_audio_loopback

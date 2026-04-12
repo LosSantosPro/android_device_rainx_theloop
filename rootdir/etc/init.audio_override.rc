@@ -1,0 +1,6 @@
+# Override stock audio HAL service to prevent stack corruption crash
+# The vendor audio.core-impl-mediatek V2 has a struct size mismatch with
+# framework V3 AudioPortConfig in setAudioPortConfigVectorToLegacy()
+service vendor.audio-hal-aidl /vendor/bin/hw/android.hardware.audio.service-aidl.mediatek
+    override
+    disabled

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Enable battery charging control in Settings -->
+    <bool name="config_chargingControlEnabled">true</bool>
+    <!-- Default to limit mode (percentage-based) -->
+    <integer name="config_defaultChargingControlMode">3</integer>
+    <!-- Default limit at 80% for always-plugged speaker -->
+    <integer name="config_defaultChargingControlLimit">80</integer>
+</resources>

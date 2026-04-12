@@ -1,0 +1,14 @@
+# usb_audio_loopback - bridges UAC2 gadget capture to speaker playback.
+
+type usb_audio_loopback, domain;
+type usb_audio_loopback_exec, exec_type, vendor_file_type, file_type;
+
+init_daemon_domain(usb_audio_loopback)
+
+# ALSA device access (/dev/snd/*)
+allow usb_audio_loopback audio_device:chr_file { open read write ioctl getattr };
+allow usb_audio_loopback audio_device:dir search;
+
+# Detect UAC2 card via /proc/asound/
+allow usb_audio_loopback proc_asound:file { open read getattr };
+allow usb_audio_loopback proc_asound:dir { open read search };

@@ -1,0 +1,89 @@
+# Audio
+audio.deep_buffer.media=true
+audio.offload.min.duration.secs=30
+audio.offload.video=false
+persist.vendor.audio.samplerate.multiple=true
+ro.audio.flinger_standbytime_ms=1000
+ro.audio.ihaladaptervendorextension_enabled=false
+ro.audio.policy_configuration.earpiece=1
+ro.audio.silent=0
+ro.audio.usb.period_us=16000
+ro.vendor.audio.feature.audioprofile=true
+ro.vendor.audio.gain.support=true
+ro.vendor.audio.sos.effect=true
+
+# Bluetooth
+# Device class: Audio (0x200000) + Loudspeaker (0x0414)
+bluetooth.device.class_of_device=2098196
+bluetooth.profile.a2dp.source.enabled=true
+bluetooth.profile.a2dp.sink.enabled=true
+bluetooth.profile.avrcp.controller.enabled=true
+bluetooth.profile.asha.central.enabled=true
+bluetooth.profile.avrcp.target.enabled=true
+bluetooth.profile.bas.client.enabled=true
+bluetooth.profile.gatt.enabled=true
+bluetooth.profile.hfp.ag.enabled=true
+bluetooth.profile.hid.device.enabled=true
+bluetooth.profile.hid.host.enabled=true
+bluetooth.profile.map.server.enabled=true
+bluetooth.profile.opp.enabled=true
+bluetooth.profile.pan.nap.enabled=true
+bluetooth.profile.pan.panu.enabled=true
+bluetooth.profile.pbap.server.enabled=true
+persist.bluetooth.disableabsvol=true
+
+# Display
+debug.sf.enable_transaction_tracing=false
+debug.sf.predict_hwc_composition_strategy=0
+debug.sf.treat_170m_as_sRGB=1
+
+# Media
+media.stagefright.thumbnail.prefer_hw_codecs=true
+
+# Radio
+persist.radio.calls.on.ims=1
+persist.radio.disable_2g=true
+persist.radio.rat_on=combine
+persist.vendor.radio.enable_vovolte_vt_ims=1
+telephony.lteOnCdmaDevice=1
+
+# Wi-Fi
+wifi.direct.interface=p2p0
+wifi.interface=wlan0
+wifi.tethering.interface=ap0
+
+# Dalvik / Runtime (Tuned for 4GB-8GB RAM)
+dalvik.vm.appimageformat=lz4
+dalvik.vm.dex2oat-Xms=64m
+dalvik.vm.dex2oat-Xmx=512m
+dalvik.vm.dex2oat-max-image-block-size=524288
+dalvik.vm.dex2oat-minidebuginfo=true
+dalvik.vm.dex2oat-resolve-startup-strings=true
+dalvik.vm.dexopt.secondary=true
+dalvik.vm.dexopt.thermal-cutoff=2
+dalvik.vm.image-dex2oat-Xms=64m
+dalvik.vm.image-dex2oat-Xmx=64m
+dalvik.vm.isa.arm64.features=default
+dalvik.vm.isa.arm64.variant=generic
+dalvik.vm.lockprof.threshold=500
+dalvik.vm.madvise.artfile.size=4294967295
+dalvik.vm.madvise.odexfile.size=104857600
+dalvik.vm.madvise.vdexfile.size=104857600
+dalvik.vm.minidebuginfo=true
+dalvik.vm.systemuicompilerfilter=speed
+dalvik.vm.usap_pool_enabled=false
+dalvik.vm.usap_pool_refill_delay_ms=3000
+dalvik.vm.usap_pool_size_max=3
+dalvik.vm.usap_pool_size_min=1
+dalvik.vm.usap_refill_threshold=1
+dalvik.vm.useartservice=true
+dalvik.vm.usejit=true
+
+# USB
+persist.sys.usb.config=adb
+
+# Disable RescueParty - prevents factory-reset escalation bootloop
+# during system_server / mediaserver hangs.
+persist.sys.disable_rescue=true
+persist.device_config.crashrecovery.enable_rescue_party=false
+

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Waterfall display insets for theloop.
+
+  The panel has rounded/curved edges on the left, right and bottom.
+  Stock framework-res.apk bakes these values directly into
+  com.android.internal.R.dimen.waterfall_display_*_edge_size
+  (left=35, right=35, top=0, bottom=20, all px). Without them the
+  system believes the display is a clean rectangle and clips the
+  status bar clock and bottom nav/system UI elements behind the curve.
+-->
+<resources>
+    <!-- 2026-04-08: reverted 56 → 35px. The earlier bump was wrong:
+         the waterfall inset is applied to application content (the
+         launcher was being pushed right) but NOT to the SystemUI
+         status bar layout, which was the original clipping complaint.
+         Stock framework-res baked value is 35px for all SKUs; match it.
+         Status bar clock clipping needs a SystemUI-side overlay, not a
+         framework waterfall inset bump. -->
+    <dimen name="waterfall_display_left_edge_size">35px</dimen>
+    <dimen name="waterfall_display_right_edge_size">35px</dimen>
+    <dimen name="waterfall_display_top_edge_size">0px</dimen>
+    <dimen name="waterfall_display_bottom_edge_size">20px</dimen>
+</resources>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Disable task snapshots (SF crash in createScreenCaptureOutput) -->
+    <bool name="config_disableTaskSnapshots">true</bool>
+
+    <!-- Disable flip-to-screen-off (MTK sensor HAL feeds garbage accel data) -->
+    <bool name="config_flipToScreenOffEnabled">false</bool>
+
+    <!-- Dual eSIM (DSDS) -->
+    <integer name="config_num_physical_slots">2</integer>
+
+    <!-- Both SIM slots are soldered eUICCs -->
+    <integer-array name="non_removable_euicc_slots">
+        <item>0</item>
+        <item>1</item>
+    </integer-array>
+
+    <!-- Force software nav bar (mtk-tpd reports hw nav keys) -->
+    <bool name="config_showNavigationBar">true</bool>
+
+    <!-- No vibration motor -->
+    <bool name="config_hapticEdgeFeedback">false</bool>
+    <bool name="config_hasVibratorAlwaysOn">false</bool>
+
+    <!-- No camera -->
+    <bool name="config_cameraDoubleTapPowerGestureEnabled">false</bool>
+
+    <!-- Smart speaker display defaults -->
+    <integer name="config_stayOnWhilePluggedIn">7</integer>
+    <integer name="config_screenOffTimeout">300000</integer>
+    <bool name="config_dozeAlwaysOnEnabled">false</bool>
+    <bool name="config_dozePulsePickup">false</bool>
+    <bool name="config_dozeWakeLockScreenSensorAvailable">false</bool>
+
+    <!-- Screensaver disabled - steals audio focus from BT A2DP Sink -->
+    <bool name="config_dreamsSupported">false</bool>
+    <bool name="config_dreamsEnabledByDefault">false</bool>
+
+    <!-- Audio defaults -->
+    <bool name="config_soundEffectsEnabled">false</bool>
+    <bool name="config_lockSoundEnabled">false</bool>
+    <integer name="config_media_default_stream_volume">11</integer>
+    <integer name="config_ring_default_stream_volume">5</integer>
+    <integer name="config_notification_default_stream_volume">5</integer>
+
+    <!-- Speakerphone always on -->
+    <bool name="config_speakerphoneAlwaysOn">true</bool>
+    <bool name="config_hwFeaturePowerButtonEndsCall">false</bool>
+
+    <!-- BT always discoverable (smart speaker should be findable) -->
+    <integer name="config_bluetooth_default_discovery_timeout_ms">0</integer>
+
+    <!-- WiFi scan interval -->
+    <integer name="config_wifi_framework_scan_interval">300000</integer>
+</resources>

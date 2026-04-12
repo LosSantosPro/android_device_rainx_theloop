@@ -1,0 +1,40 @@
+# MTK proprietary vendor service type - catch-all for MTK AIDL services
+# with no matching AOSP hal_*_service type.
+# Declared as service_manager_type so servicemanager can manage it.
+type mtk_vendor_service, service_manager_type;
+
+# MTK gralloc allocator registers mapper/mediatek as hal_graphics_mapper_service
+# (AOSP type). AOSP has no hal_graphics_mapper_server attribute / no add rule,
+# so we grant it explicitly to the allocator domain.
+allow hal_graphics_allocator_default hal_graphics_mapper_service:service_manager { add find };
+
+# Vendor HALs that register (add) these services
+allow mtk_hal_gnss mtk_vendor_service:service_manager { add find };
+allow mtk_hal_power mtk_vendor_service:service_manager { add find };
+allow mtk_hal_audio mtk_vendor_service:service_manager { add find };
+allow mtk_hal_pq mtk_vendor_service:service_manager { add find };
+allow mtk_hal_nvramagent mtk_vendor_service:service_manager { add find };
+allow mtk_hal_videotelephony mtk_vendor_service:service_manager { add find };
+allow mtk_hal_neuralnetworks mtk_vendor_service:service_manager { add find };
+allow mtkpower_applist mtk_vendor_service:service_manager { add find };
+allow mtk_lbs_service mtk_vendor_service:service_manager { add find };
+allow netdagent mtk_vendor_service:service_manager { add find };
+allow radio mtk_vendor_service:service_manager { add find };
+allow rild mtk_vendor_service:service_manager { add find };
+allow hal_graphics_composer_default mtk_vendor_service:service_manager { add find };
+# init -> service_manager_type add/find blocked by init.te:829 neverallow
+# allow init mtk_vendor_service:service_manager { add };
+
+# Core/app domains that need to find MTK vendor services
+allow system_server mtk_vendor_service:service_manager { find };
+allow system_app mtk_vendor_service:service_manager { find };
+allow platform_app mtk_vendor_service:service_manager { find };
+allow priv_app mtk_vendor_service:service_manager { find };
+allow untrusted_app mtk_vendor_service:service_manager { find };
+allow surfaceflinger mtk_vendor_service:service_manager { find };
+allow bootanim mtk_vendor_service:service_manager { find };
+allow mediaswcodec mtk_vendor_service:service_manager { find };
+allow rkpdapp mtk_vendor_service:service_manager { find };
+allow mtk_hal_secure_element mtk_vendor_service:service_manager { find };
+allow hal_nfc_default mtk_vendor_service:service_manager { find };
+allow hal_drm_widevine mtk_vendor_service:service_manager { find };

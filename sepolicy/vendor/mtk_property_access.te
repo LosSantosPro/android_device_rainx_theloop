@@ -1,0 +1,5 @@
+# Stock grants all domains read access to mtk_core_property_type properties.
+# This is required because MTK vendor libs (e.g., Mali GPU driver) read
+# vendor.mali.*, vendor.debug.gpu.* etc. from app processes. Without this,
+# the Mali driver hits bad_optional_access and crashes the GPU thread.
+allow domain mtk_core_property_type:file { read getattr map open };

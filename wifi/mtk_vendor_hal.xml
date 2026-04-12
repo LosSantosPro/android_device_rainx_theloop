@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- MediaTek WiFi vendor HAL descriptor for the A16 AOSP wifi-service-lazy.
+     The service reads XML files from /vendor/etc/wifi/vendor_hals/ to discover
+     vendor HAL libraries when no statically-linked init function is found. -->
+<WifiVendorHal version="1">
+  <path>/vendor/lib64/libwifi-hal.so</path>
+  <primary>1</primary>
+</WifiVendorHal>

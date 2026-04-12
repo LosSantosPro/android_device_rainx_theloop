@@ -1,0 +1,96 @@
+# Vendor RC files
+/vendor/etc/init/hw/init\.mt6877\.rc         u:object_r:vendor_configs_file:s0
+/vendor/etc/init/hw/init\.mt6877\.usb\.rc     u:object_r:vendor_configs_file:s0
+/vendor/etc/init/hw/init\.mtkgki\.rc         u:object_r:vendor_configs_file:s0
+/vendor/etc/init/hw/init\.project\.rc        u:object_r:vendor_configs_file:s0
+
+# Camera HAL (MTK proprietary); required for init domain transition.
+/vendor/bin/hw/camerahalserver                   u:object_r:mtk_hal_camera_exec:s0
+
+# Camera ISP / CCU / misc char device nodes. Types declared in
+# proprietary vendor_sepolicy.cil; entries here are needed because
+# AOSP rebuilds vendor_file_contexts from BOARD_VENDOR_SEPOLICY_DIRS.
+/dev/camera-isp(/.*)?      u:object_r:camera_isp_device:s0
+/dev/camera-mem(/.*)?      u:object_r:camera_mem_device:s0
+/dev/camera-dip(/.*)?      u:object_r:camera_dip_device:s0
+/dev/camera-dpe(/.*)?      u:object_r:camera_dpe_device:s0
+/dev/camera-mfb(/.*)?      u:object_r:camera_mfb_device:s0
+/dev/camera-rsc(/.*)?      u:object_r:camera_rsc_device:s0
+/dev/camera-fdvt(/.*)?     u:object_r:camera_fdvt_device:s0
+/dev/camera-wpe(/.*)?      u:object_r:camera_wpe_device:s0
+/dev/ccu(/.*)?             u:object_r:ccu_device:s0
+/dev/kd_camera_hw(/.*)?    u:object_r:kd_camera_hw_device:s0
+/dev/seninf(/.*)?          u:object_r:seninf_device:s0
+/dev/flashlight(/.*)?      u:object_r:flashlight_device:s0
+/dev/MAINAF(/.*)?          u:object_r:MAINAF_device:s0
+/dev/MAIN2AF(/.*)?         u:object_r:MAIN2AF_device:s0
+/dev/MAIN3AF(/.*)?         u:object_r:MAIN3AF_device:s0
+/dev/MAIN4AF(/.*)?         u:object_r:MAIN4AF_device:s0
+/dev/SUBAF(/.*)?           u:object_r:SUBAF_device:s0
+
+# GPU - Mali kbase driver entry point.
+/dev/mali.*                u:object_r:gpu_device:s0
+
+# CCCI (Cellular Co-processor Communication Interface) - MTK modem IPC.
+/dev/ccci.*                u:object_r:ccci_device:s0
+/dev/ccci_aud              u:object_r:ccci_aud_device:s0
+/dev/ccci_vts              u:object_r:ccci_vts_device:s0
+/dev/ccci_monitor          u:object_r:ccci_monitor_device:s0
+/dev/ccci_raw_mdm          u:object_r:ccci_mdmonitor_device:s0
+/dev/ccci_mdl_monitor      u:object_r:ccci_mdmonitor_device:s0
+/dev/ccci_ccb_md_monitor   u:object_r:ccci_mdmonitor_device:s0
+/dev/ccci_ccb_dhl          u:object_r:ccci_mdl_device:s0
+/dev/ccci_raw_dhl          u:object_r:ccci_mdl_device:s0
+/dev/ccci_md_log_tx        u:object_r:ccci_mdl_device:s0
+/dev/ccci_md_log_rx        u:object_r:ccci_mdl_device:s0
+/dev/ccci_md_log_ctrl      u:object_r:ccci_mdl_device:s0
+/dev/ccci_ccb_ctrl         u:object_r:ccci_ccb_device:s0
+/dev/ccci_raw_audio        u:object_r:ccci_aud_device:s0
+/dev/ccci_wifi_proxy       u:object_r:ccci_wifi_proxy_device:s0
+/dev/ccci_c2k_agps         u:object_r:agps_device:s0
+
+# CCCI proxy ttys (gsm0710muxd / mdlog / agps / icusb / nlop / nwkopt).
+/dev/ttyC0                 u:object_r:gsm0710muxd_device:s0
+/dev/ttyC1                 u:object_r:mdlog_device:s0
+/dev/ttyC2                 u:object_r:agps_device:s0
+/dev/ttyC3                 u:object_r:icusb_device:s0
+/dev/ttyC5                 u:object_r:nwkopt_device:s0
+/dev/ttyC6                 u:object_r:nlop_device:s0
+/dev/ttyCMIPC[0-9]         u:object_r:gsm0710muxd_device:s0
+
+# Wi-Fi/BT chip control node.
+/dev/wmtWifi               u:object_r:wmtWifi_device:s0
+
+# Camera secondary sensor interface device.
+/dev/seninf_n3d(/.*)?      u:object_r:seninf_n3d_device:s0
+/dev/kd_camera_hw_bus2(/.*)? u:object_r:kd_camera_hw_bus2_device:s0
+
+# WiFi HAL (AIDL, replaces stock HIDL mtk_hal_wifi)
+/(vendor|system/vendor)/bin/hw/android\.hardware\.wifi-service-lazy\.rainx  u:object_r:hal_wifi_default_exec:s0
+
+# USB gadget HAL
+/(vendor|system/vendor)/bin/hw/android\.hardware\.usb\.gadget-service\.theloop  u:object_r:hal_usb_gadget_default_exec:s0
+
+# GPU module loader
+/(vendor|system/vendor)/bin/load_gpu_modules\.sh  u:object_r:init_insmod_sh_exec:s0
+
+# awk - toybox applet
+/(vendor|system/vendor)/bin/awk                   u:object_r:vendor_toolbox_exec:s0
+
+# libaiselector.so - MTK AI frame selector; must be same_process_hal_file
+# so core domains (SF, bootanim, zygote) can dlopen it.
+/(vendor|system/vendor)/lib(64)?/libaiselector\.so  u:object_r:same_process_hal_file:s0
+
+# libmml.so - MTK Media Meta Layer; same_process_hal_file for core domains.
+/(vendor|system/vendor)/lib(64)?/libmml\.so    u:object_r:same_process_hal_file:s0
+
+# GPU kernel modules in /vendor/etc/gpu_ko/. Without this, they inherit
+# vendor_configs_file and init_insmod_sh can't module_load them (stock
+# allows module_load on vendor_file, not vendor_configs_file).
+/vendor/etc/gpu_ko(/.*)?                       u:object_r:vendor_file:s0
+
+# USB audio loopback service
+/(vendor|system/vendor)/bin/usb_audio_loopback  u:object_r:usb_audio_loopback_exec:s0
+
+# Fstab
+/vendor/etc/fstab\.emmc                      u:object_r:vendor_configs_file:s0

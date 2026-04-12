@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Smart speaker: always request audio focus when A2DP Sink receives audio.
+         Without this, A2dpSinkStreamHandler never calls requestAudioFocusIfNone()
+         and the native layer flushes all decoded frames (rx_flush=true). -->
+    <bool name="a2dp_sink_automatically_request_audio_focus">true</bool>
+</resources>

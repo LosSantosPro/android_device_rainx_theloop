@@ -1,0 +1,51 @@
+# ============================================================================
+# vendor_mtk_prebuilt/ - auto-imported proprietary sepolicy from stock MT6877
+#
+# Contents:
+#   file_contexts        - ~1071 vendor dev/bin/data labels (filtered for
+#                          dedup against AOSP + hand-written entries)
+#   mtk_proprietary.te   - ~13k allow/dontaudit/typetransition/allowx rules
+#                          converted from stock vendor_sepolicy.cil via
+#                          tools/cil2te.py
+#   genfs_contexts       - ~948 genfscon entries for /proc, /sys, /dev/cpuctl
+#
+# All files are mechanically derived from the proprietary blob at
+# vendor/rainx/theloop/proprietary/vendor/etc/selinux/ and should not
+# be hand-edited. Separated from sepolicy/vendor/ so blob resyncs do
+# not clobber hand-written overrides.
+#
+# DO NOT HAND-EDIT. Regenerate file_contexts via:
+#
+#   cd device/rainx/theloop/sepolicy
+#   grep -v 'atci-audio_socket\|loop-control_device\|mtk-adc-cali_device\|rild-dongle_socket\|hal_keymint_strongbox_exec' \
+#     ../../../../vendor/rainx/theloop/proprietary/vendor/etc/selinux/vendor_file_contexts \
+#     > vendor_mtk_prebuilt/file_contexts.body.raw
+#   awk '!/^#/ && NF>=2 {print $1}' \
+#     ../../../../system/sepolicy/vendor/file_contexts vendor/file_contexts \
+#     | sort -u > /tmp/dedup_existing.txt
+#   awk 'NR==FNR{dup[$1]=1; next} /^#/||NF<2 {print; next} {if (!($1 in dup)) print}' \
+#     /tmp/dedup_existing.txt vendor_mtk_prebuilt/file_contexts.body.raw \
+#     > vendor_mtk_prebuilt/file_contexts.body
+#   cat vendor_mtk_prebuilt/HEADER.txt vendor_mtk_prebuilt/file_contexts.body \
+#     > vendor_mtk_prebuilt/file_contexts
+#   rm vendor_mtk_prebuilt/file_contexts.body.raw
+#
+# Regenerate mtk_proprietary.te + genfs_contexts via:
+#
+#   python3 device/rainx/theloop/sepolicy/tools/cil2te.py \
+#     --cil   vendor/rainx/theloop/proprietary/vendor/etc/selinux/vendor_sepolicy.cil \
+#     --known device/rainx/theloop/sepolicy/vendor/mtk_types.te \
+#     --known out/soong/.intermediates/system/sepolicy/vendor_sepolicy.conf/android_common/theloop/vendor_sepolicy.conf \
+#     --existing-conf out/soong/.intermediates/system/sepolicy/vendor_sepolicy.conf/android_common/theloop/vendor_sepolicy.conf \
+#     --existing-genfs device/rainx/theloop/sepolicy/vendor/genfs_contexts \
+#     --existing-genfs device/lineage/sepolicy/common/private/genfs_contexts \
+#     --existing-genfs system/sepolicy/private/genfs_contexts \
+#     --installed-prefix device/rainx/theloop/sepolicy/vendor_mtk_prebuilt \
+#     --out /tmp/cil2te_out
+#   cp /tmp/cil2te_out/mtk_proprietary.te         vendor_mtk_prebuilt/mtk_proprietary.te
+#   cp /tmp/cil2te_out/mtk_proprietary_genfs.txt  vendor_mtk_prebuilt/genfs_contexts
+#
+# See tools/cil2te.py --help for flag details.
+# ============================================================================
+
+

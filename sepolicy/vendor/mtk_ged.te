@@ -1,0 +1,27 @@
+# /proc/ged - MTK GED (Graphics Extension Driver) userspace control node.
+# Used by all GPU-touching processes for DVFS hints and GPU perf control.
+# Ioctl range: GED_IOCTL_* from drivers/gpu/mediatek/ged/ged_main.c.
+
+# Apps - all appdomain members hit this via RenderThread / HWUI.
+allow appdomain proc_ged:file { open read write getattr lock append map ioctl };
+allowxperm appdomain proc_ged:file ioctl { 0x6700-0x6711 0x6764-0x676b 0x67c8 };
+
+# SurfaceFlinger - DVFS hints and vsync pacing.
+allow surfaceflinger proc_ged:file { open read write getattr lock append map ioctl };
+allowxperm surfaceflinger proc_ged:file ioctl { 0x6700-0x6711 0x6764-0x676b 0x67c8 };
+
+# BootAnimation
+allow bootanim proc_ged:file { open read write getattr lock append map ioctl };
+allowxperm bootanim proc_ged:file ioctl { 0x6700-0x6711 0x6764-0x676b 0x67c8 };
+
+# Composer HAL - links MTK GPU libs which open /proc/ged.
+allow hal_graphics_composer_default proc_ged:file { open read write getattr lock append map ioctl };
+allowxperm hal_graphics_composer_default proc_ged:file ioctl { 0x6700-0x6711 0x6764-0x676b 0x67c8 };
+
+# system_server - PowerManagerService sends GPU DVFS power events.
+allow system_server proc_ged:file { open read write getattr lock append map ioctl };
+allowxperm system_server proc_ged:file ioctl { 0x6700-0x6711 0x6764-0x676b 0x67c8 };
+
+# Graphics allocator HAL - libgralloc_mtk opens /proc/ged on buffer alloc.
+allow hal_graphics_allocator_default proc_ged:file { open read write getattr lock append map ioctl };
+allowxperm hal_graphics_allocator_default proc_ged:file ioctl { 0x6700-0x6711 0x6764-0x676b 0x67c8 };

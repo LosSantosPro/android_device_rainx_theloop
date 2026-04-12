@@ -1,0 +1,23 @@
+sh_binary {
+    name: "init.insmod.sh",
+    src: "bin/init.insmod.sh",
+    vendor: true,
+}
+
+sh_binary {
+    name: "init.pstore_blk.sh",
+    src: "bin/init.pstore_blk.sh",
+    vendor: true,
+}
+
+prebuilt_etc {
+    name: "init.insmod.mt6877.cfg",
+    src: "etc/init.insmod.mt6877.cfg",
+    vendor: true,
+}
+
+prebuilt_etc {
+    name: "ueventd.mt6877.rc",
+    src: "etc/ueventd.mt6877.rc",
+    vendor: true,
+}

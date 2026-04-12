@@ -1,0 +1,29 @@
+# Extra permissions for init_insmod_sh (load_gpu_modules.sh).
+#
+# AOSP's init_insmod_sh domain only allows module_load from
+# vendor_kernel_modules. Our GPU .ko files live under /vendor/etc/gpu_ko/
+# (now relabeled to vendor_file via file_contexts), and the script also
+# reads /proc/cmdline, writes a log to persist, and chmods /dev/mali0.
+#
+# Stock vendor_sepolicy.cil grants:
+#   init_insmod_sh → vendor_file module_load
+#   init_insmod_sh → proc_modules read
+#   init_insmod_sh → vendor_mtk_device_prop set
+#   init_insmod_sh → gpu_device setattr/getattr  (implicit through chmod)
+
+# Module loading from vendor_file (GPU .ko files)
+allow init_insmod_sh vendor_file:system module_load;
+
+# chmod /dev/mali0 after GPU driver loads
+allow init_insmod_sh gpu_device:chr_file { getattr setattr };
+
+# search through mnt_vendor_file (/mnt/vendor) to reach persist
+allow init_insmod_sh mnt_vendor_file:dir search;
+
+# GPU loader writes gpu_load.log to /mnt/vendor/persist
+allow init_insmod_sh mnt_vendor_file:file { open append write };
+allow init_insmod_sh persist_data_file:dir { search write add_name };
+allow init_insmod_sh persist_data_file:file { create open append write };
+
+# modprobe reads /proc/cmdline for GPU module selection
+allow init_insmod_sh proc_cmdline:file { getattr read open };

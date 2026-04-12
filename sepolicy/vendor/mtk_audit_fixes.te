@@ -1,0 +1,126 @@
+# Targeted allow rules from runtime audit on permissive build.
+# Rules hitting neverallows have been removed; see dropped list below.
+#
+# Dropped (neverallow violations):
+#   - default_android_service:service_manager add/find (domain.te:771)
+#   - vendor_default_prop:property_service set (domain.te:789)
+#   - vendor_init -> core prop types (multiple neverallows)
+#   - vendor_init -> vendor_userdir_file:dir write (vold.te:405)
+#   - init -> execute_no_trans on shell_exec/system_file/vendor_file (init.te:817)
+#   - init -> service_manager_type add/find (init.te:829)
+#   - init -> sysfs:file open (init.te:837)
+#   - init/storaged -> debugfs_mmc (domain.te:2139)
+#   - surfaceflinger/bootanim/zygote -> vendor_file execute (domain.te:1194,2022,2060)
+#   - surfaceflinger/bootanim/zygote -> vendor_default_prop (property.te:158,358)
+#   - * -> init:binder (domain.te:692)
+#   - fsck -> mnt_vendor_file:dir (domain.te:1510)
+#   - fsck/vold -> persist_data_file:dir (domain.te:1034)
+#   - logpersist -> mnt_vendor_file:file write (logpersist.te:61)
+#   - secure_element -> system_data_file (domain.te:1352, app.te:607)
+#   - mtk_hal_audio -> default_prop:file read (property.te:276)
+
+# --- kernel (early boot) ---
+allow kernel sepolicy_file:file { getattr };
+allow kernel system_bootstrap_lib_file:dir { getattr };
+allow kernel system_bootstrap_lib_file:file { getattr };
+allow kernel system_dlkm_file:dir { getattr };
+
+# --- vendor_init (surviving rules) ---
+allow vendor_init debugfs_tracing_instances:file { create };
+allow vendor_init proc:file { write };
+allow vendor_init proc_perfserv:file { setattr };
+allow vendor_init system_prop:file { getattr map open read };
+allow vendor_init system_prop:property_service { set };
+
+# --- toolbox (init.rc stage scripts, GPU module loading) ---
+allow toolbox gpu_device:chr_file { getattr setattr };
+allow toolbox init:unix_stream_socket { connectto };
+allow toolbox kernel:system { syslog_read };
+allow toolbox kmsg_device:chr_file { open read };
+allow toolbox mnt_vendor_file:file { append getattr ioctl write };
+allow toolbox property_socket:sock_file { write };
+allow toolbox toolbox:capability { sys_module };
+allow toolbox usb_control_prop:property_service { set };
+allow toolbox vendor_configs_file:system { module_load };
+allow toolbox vold_status_prop:property_service { set };
+
+# --- init_insmod_sh (kernel module loader) ---
+allow init_insmod_sh init_insmod_sh:capability { sys_nice };
+allow init_insmod_sh init_insmod_sh:key { write };
+allow init_insmod_sh kernel:process { setsched };
+allow init_insmod_sh kmsg_device:chr_file { open write };
+
+# --- init (modem control, binder, sysfs, thermal) ---
+allow init ccci_ccb_device:chr_file { ioctl map open read write };
+allow init ccci_device:chr_file { open read write };
+allow init ccci_mdl_device:chr_file { getattr ioctl map open read write };
+allow init debugfs_bootreceiver_tracing:dir { add_name write };
+allow init logmisc_data_file:file { append };
+allow init mnt_vendor_file:file { append };
+allow init proc_thermal:file { open read write };
+allow init same_process_hal_file:file { execute };
+allow init servicemanager:binder { call transfer };
+allow init sysfs:file { setattr };
+allow init sysfs_boot_info:file { open };
+allow init sysfs_ccci:file { open };
+allow init sysfs_devices_block:file { open write };
+allow init system_server:binder { call };
+allow init vendor_file:file { execute };
+
+# --- fsck (surviving: sysfs block device info) ---
+allow fsck sysfs_batteryinfo:dir { search };
+allow fsck sysfs_devices_block:dir { search };
+allow fsck sysfs_devices_block:file { getattr open read };
+
+# --- fuelgauged_nvram ---
+allow fuelgauged_nvram sysfs_dt_firmware_android:dir { search };
+allow fuelgauged_nvram sysfs_dt_firmware_android:file { getattr open read };
+
+# --- logpersist (write neverallowed; getattr only) ---
+allow logpersist mnt_vendor_file:file { getattr };
+
+# --- vold (all rules neverallowed, nothing survives) ---
+
+# --- mediaprovider ---
+allow mediaprovider cache_recovery_file:dir { open read };
+
+# --- MTK vendor HALs ---
+allow mtk_hal_memtrack proc_rss_pid:file { getattr open read write };
+
+allow mtk_hal_power proc_perfserv:file { getattr open write };
+
+allow thermal proc_mdm_mdinfo:file { open read write };
+
+# --- system_server ---
+allow system_server tkcore_systa_file:dir { getattr open read };
+
+# --- hal_usb_gadget_default ---
+allow hal_usb_gadget_default sysfs:file { read open getattr };
+allow hal_usb_gadget_default sysfs_udc:dir search;
+
+# --- hal_lineage_health_default (charger sysfs) ---
+allow hal_lineage_health_default sysfs_batteryinfo:dir search;
+allow hal_lineage_health_default sysfs_batteryinfo:file { read write open getattr };
+allow hal_lineage_health_default sysfs:dir search;
+
+# --- Neverallowed / platform-private (dontaudit) ---
+dontaudit surfaceflinger vendor_default_prop:file { getattr open map };
+dontaudit vendor_init config_prop:property_service set;
+dontaudit vendor_init build_prop:property_service set;
+dontaudit vendor_init userdebug_or_eng_prop:property_service set;
+dontaudit vendor_init default_prop:property_service set;
+dontaudit vendor_init default_prop:file read;
+dontaudit vendor_init vendor_userdir_file:dir { write add_name };
+dontaudit init debugfs_mmc:file setattr;
+dontaudit init sysfs:file { open read };
+dontaudit init system_file:file execute_no_trans;
+dontaudit vold persist_data_file:dir { read open ioctl };
+dontaudit fsck persist_data_file:dir getattr;
+dontaudit fsck mnt_vendor_file:dir search;
+
+# --- App domains ---
+allow system_app fm_device:chr_file { ioctl open read write };
+
+
+# OpenEUICC (platform_app) needs to find the secure element service for eSIM
+allow platform_app secure_element_service:service_manager find;

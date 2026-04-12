@@ -1,0 +1,81 @@
+# Domain transitions for system_ext MTK binaries.
+#
+# Stock ships these in system_ext_sepolicy.cil as prebuilt CIL rules.
+# Our LineageOS build compiles system_ext policy from AOSP source, so the
+# stock transitions are missing. Without them, init gets execute_no_trans
+# denials (neverallowed at init.te:817) for every system_ext binary and
+# the services never start, causing a boot hang under enforcing.
+#
+# Each binary needs three things:
+#   1. init allowed to read/execute the exec type and transition to the domain
+#   2. The domain allowed to use the exec type as entrypoint
+#   3. A type_transition rule so the transition is automatic
+#
+# Source: stock system_ext_sepolicy.cil (unsuffixed types, no _202404).
+
+# --- audio_vendor_parameter_parser ---
+allow init audio_vendor_parameter_parser_exec:file { read getattr map execute open };
+allow init audio_vendor_parameter_parser:process { transition siginh rlimitinh };
+allow audio_vendor_parameter_parser audio_vendor_parameter_parser_exec:file { read getattr map execute open entrypoint };
+type_transition init audio_vendor_parameter_parser_exec:process audio_vendor_parameter_parser;
+# Service registration + binder (from stock system_ext_sepolicy.cil)
+allow audio_vendor_parameter_parser audio_vendor_parameter_parser_service:service_manager { add find };
+allow audio_vendor_parameter_parser servicemanager:binder { call transfer };
+allow servicemanager audio_vendor_parameter_parser:binder { transfer };
+allow audio_vendor_parameter_parser servicemanager:fd use;
+allow audioserver audio_vendor_parameter_parser:binder { call transfer };
+allow audio_vendor_parameter_parser audioserver:binder { transfer };
+allow audioserver audio_vendor_parameter_parser:fd use;
+allow audioserver audio_vendor_parameter_parser_service:service_manager { find };
+
+# --- batterywarning ---
+allow init batterywarning_exec:file { read getattr map execute open };
+allow init batterywarning:process { transition siginh rlimitinh };
+allow batterywarning batterywarning_exec:file { read getattr map execute open entrypoint };
+type_transition init batterywarning_exec:process batterywarning;
+
+# --- connsyslogger ---
+allow init connsyslogger_exec:file { read getattr map execute open };
+allow init connsyslogger:process { transition siginh rlimitinh };
+allow connsyslogger connsyslogger_exec:file { read getattr map execute open entrypoint };
+type_transition init connsyslogger_exec:process connsyslogger;
+allow connsyslogger property_socket:sock_file write;
+allow connsyslogger init:unix_stream_socket connectto;
+
+# --- emdlogger ---
+allow init emdlogger_exec:file { read getattr map execute open };
+allow init emdlogger:process { transition siginh rlimitinh };
+allow emdlogger emdlogger_exec:file { read getattr map execute open entrypoint };
+type_transition init emdlogger_exec:process emdlogger;
+
+# --- mtk_plpath_utils -> update_engine domain (stock mapping) ---
+# Commented out for A16: core domain (update_engine) cannot execute/entrypoint
+# a vendor-declared type (domain.te:1237,1254,2155 neverallows).
+# File_contexts entry also removed, so no file carries this label anyway.
+# allow init mtk_plpath_utils_exec:file { read getattr map execute open };
+# allow update_engine mtk_plpath_utils_exec:file { read getattr map execute open entrypoint };
+# type_transition init mtk_plpath_utils_exec:process update_engine;
+
+# --- thermald ---
+allow init thermald_exec:file { read getattr map execute open };
+allow init thermald:process { transition siginh rlimitinh };
+allow thermald thermald_exec:file { read getattr map execute open entrypoint };
+type_transition init thermald_exec:process thermald;
+
+# --- terservice ---
+allow init terservice_exec:file { read getattr map execute open };
+allow init terservice:process { transition siginh rlimitinh };
+allow terservice terservice_exec:file { read getattr map execute open entrypoint };
+type_transition init terservice_exec:process terservice;
+
+# --- mobile_log_d ---
+allow init mobile_log_d_exec:file { read getattr map execute open };
+allow init mobile_log_d:process { transition siginh rlimitinh };
+allow mobile_log_d mobile_log_d_exec:file { read getattr map execute open entrypoint };
+type_transition init mobile_log_d_exec:process mobile_log_d;
+
+# --- netdiag ---
+allow init netdiag_exec:file { read getattr map execute open };
+allow init netdiag:process { transition siginh rlimitinh };
+allow netdiag netdiag_exec:file { read getattr map execute open entrypoint };
+type_transition init netdiag_exec:process netdiag;

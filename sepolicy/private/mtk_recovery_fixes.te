@@ -1,0 +1,48 @@
+# Allow rules for recovery boot under enforcing SELinux.
+
+# --- init: cgroup management on rootfs in recovery ---
+# In recovery the cgroup fs is on rootfs (not tmpfs).
+# Neverallowed by domain.te:753; non-critical.
+# recovery_only(` allow init rootfs:file { create write }; ')
+
+# --- charger: wake_alarm for charge monitoring ---
+allow charger self:capability2 wake_alarm;
+
+# --- recovery: pstore access for last-log / last-kmsg ---
+recovery_only(`
+  allow recovery pstorefs:dir search;
+  allow recovery pstorefs:file { read open };
+')
+
+# --- recovery: ADB key management ---
+recovery_only(`
+  allow recovery adb_keys_file:dir search;
+  allow recovery adb_keys_file:file { read open getattr };
+')
+
+# --- recovery: property sets ---
+# ro.boottime.init.fsck.data
+recovery_only(`
+  set_prop(recovery, boottime_public_prop)
+')
+# service.adb.root
+recovery_only(`
+  set_prop(recovery, shell_prop)
+')
+# ro.adb.secure.recovery - neverallowed by property.te:790; non-critical.
+# recovery_only(` set_prop(recovery, default_prop) ')
+
+# --- ueventd: sys_nice for device coldplug ---
+# Critical; denial may cause ueventd crash and reboot.
+allow ueventd self:capability sys_nice;
+
+# --- recovery: loop device sysfs access for OTA/sideload ---
+recovery_only(`
+  allow recovery sysfs_loop:dir { read open search };
+  allow recovery sysfs_loop:file { write open };
+')
+
+# --- recovery: property file mapping during property area init ---
+recovery_only(`
+  allow recovery aac_drc_prop:file { open getattr map };
+')

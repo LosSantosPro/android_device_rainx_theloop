@@ -1,0 +1,9 @@
+# SELinux allow rules for system-private types (not visible to vendor policy)
+# Companion to vendor/mtk_audit_fixes.te
+# storaged -> debugfs_mmc dropped (domain.te:2139 neverallow)
+
+# --- kcmdlinectrl (reads DT firmware android compatible) ---
+allow kcmdlinectrl sysfs_dt_firmware_android:file { getattr open read };
+
+# --- misctrl (reads DT firmware android compatible) ---
+allow misctrl sysfs_dt_firmware_android:file { getattr open read };

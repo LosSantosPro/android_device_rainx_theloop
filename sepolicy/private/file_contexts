@@ -1,0 +1,7 @@
+# Intentionally empty.
+#
+# A15 had 9 entries mapping /system_ext/bin/* to vendor _exec types.
+# In A16 this conflicts: sepolicy_test requires system_file_type +
+# coredomain on /system_ext/ paths, but domain.te:1212 forbids vendor
+# domains from executing system_file_type binaries. Removed to allow
+# clean builds; binaries fall back to system_ext_file at runtime.

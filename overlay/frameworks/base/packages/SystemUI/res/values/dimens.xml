@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  SystemUI status bar padding overlay for theloop.
+
+  The panel has a ~35px curved corner top-left. The waterfall inset
+  applies to *application* content, not the SystemUI status bar itself,
+  so bumping waterfall_display_left_edge_size shifts apps right (bad)
+  without moving the clock. The correct knob is status_bar_padding_start,
+  which SystemUI adds as leading padding inside PhoneStatusBarView. We
+  bump it from the default 4dp to 16dp to clear the curve.
+
+  400dpi: 1dp = 2.5px, so +12dp = +30px of shift. Combined with the
+  stock 4dp baseline this puts the clock start at ~40px from the panel
+  edge, matching stock SystemUI placement.
+
+  Also nudge notification icons on the same edge by the same amount via
+  status_bar_clock_starting_padding so the notification popups don't
+  still clip into the curve when they spill past the clock.
+-->
+<resources>
+    <dimen name="status_bar_padding_start">16dp</dimen>
+    <dimen name="status_bar_clock_starting_padding">8dp</dimen>
+</resources>

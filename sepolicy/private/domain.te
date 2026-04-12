@@ -1,0 +1,2 @@
+# Permissive mode is set via kernel cmdline: androidboot.selinux=permissive
+# Cannot use "permissive domain;" in Android 15 - attributes may not be permissive

@@ -1,0 +1,40 @@
+on init
+    mkdir /config
+    mount configfs none /config
+    mkdir /config/usb_gadget/g1 0770 shell shell
+    write /config/usb_gadget/g1/idVendor 0x18d1
+    write /config/usb_gadget/g1/idProduct 0xd001
+    mkdir /config/usb_gadget/g1/strings/0x409
+    write /config/usb_gadget/g1/strings/0x409/serialnumber ${ro.serialno}
+    write /config/usb_gadget/g1/strings/0x409/manufacturer "LineageOS"
+    write /config/usb_gadget/g1/strings/0x409/product "LineageOS Recovery"
+    mkdir /config/usb_gadget/g1/functions/ffs.adb
+    mkdir /config/usb_gadget/g1/configs/b.1
+    mkdir /config/usb_gadget/g1/configs/b.1/strings/0x409
+    write /config/usb_gadget/g1/configs/b.1/strings/0x409/configuration "adb"
+    symlink /config/usb_gadget/g1/functions/ffs.adb /config/usb_gadget/g1/configs/b.1/f1
+
+    setprop sys.usb.controller 11201000.usb0
+    setprop sys.usb.configfs 1
+    setprop sys.usb.config adb
+    setprop ro.adb.secure 0
+    setprop ro.debuggable 1
+
+    symlink /dev/block/platform/soc/11230000.mmc /dev/block/platform/bootdevice
+
+on fs
+    wait /dev/block/platform/soc/11230000.mmc
+    start adbd
+
+    # Mount metadata and create OTA dirs for update_engine_sideload
+    wait /dev/block/by-name/metadata 5
+    mount f2fs /dev/block/by-name/metadata /metadata noatime nosuid nodev
+
+on post-fs
+    mkdir /metadata/ota 0755 root root
+    mkdir /metadata/ota/snapshots 0755 root root
+
+on boot
+    # Touch drivers - load after base modules
+    insmod /lib/modules/focaltech_touch_i2c_v42.ko
+    insmod /lib/modules/sitronix_touch.ko

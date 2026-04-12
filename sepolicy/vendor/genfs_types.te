@@ -1,0 +1,10 @@
+# Types referenced by genfs_contexts but not declared in mtk_types.te.
+
+type proc_perfserv;
+typeattribute proc_perfserv proc_type;
+
+type proc_rss_pid;
+typeattribute proc_rss_pid proc_type;
+
+type proc_mdm_mdinfo;
+typeattribute proc_mdm_mdinfo proc_type;

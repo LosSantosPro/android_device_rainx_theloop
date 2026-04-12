@@ -1,0 +1,5 @@
+softdep mtk_sec_heap pre: apusys
+softdep mali_kbase_mt6877_r49 pre: memory_group_manager
+softdep mt6877_dcm pre: mtk_dcm
+softdep gz_tz_system pre: gz_virtio_mod
+softdep gz_tz_system pre: gz_irq_mod

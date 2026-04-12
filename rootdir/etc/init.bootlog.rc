@@ -1,0 +1,11 @@
+on post-fs
+    mkdir /mnt/vendor/persist 0771 root root
+    mount ext4 /dev/block/by-name/persist /mnt/vendor/persist noatime
+    exec -- /system/bin/sh -c "dmesg > /mnt/vendor/persist/dmesg_postfs.txt"
+
+on post-fs-data
+    exec -- /system/bin/sh -c "dmesg > /mnt/vendor/persist/dmesg_postfsdata.txt"
+
+on boot
+    exec -- /system/bin/sh -c "dmesg > /mnt/vendor/persist/dmesg_boot.txt"
+    exec -- /system/bin/sh -c "logcat -d -b all > /mnt/vendor/persist/logcat_boot.txt"

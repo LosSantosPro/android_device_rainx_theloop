@@ -1,0 +1,2 @@
+# Permissive mode via kernel cmdline handles all denials
+# Allow rules removed - vendor types cannot be referenced from system_ext private policy
