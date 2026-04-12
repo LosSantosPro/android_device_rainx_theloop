@@ -217,6 +217,10 @@ PRODUCT_PROPERTY_OVERRIDES += ro.camera.sound.forced=0
 # Battery charging control via LineageOS health HAL (Settings > Battery)
 PRODUCT_PACKAGES += vendor.lineage.health-service.default
 
+# Override stock vendor init.rc with our modified version (USB VID, UAC2)
+PRODUCT_COPY_FILES += \
+    $(LOCAL_PATH)/rootdir/etc/init.mt6877.usb.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.mt6877.usb.rc
+
 # Smart speaker QOL
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/etc/init.smart_speaker.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/init.smart_speaker.rc \

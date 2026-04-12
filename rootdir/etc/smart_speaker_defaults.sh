@@ -1,30 +1,26 @@
 #!/system/bin/sh
-# First-boot only - things that can't be set via SettingsProvider overlay
+# Smart speaker first-boot defaults.
 
-FLAG=/data/local/tmp/.smart_speaker_configured
-[ -f "$FLAG" ] && exit 0
-
-# Wait for BT address (BT service starts after boot_completed)
-BTMAC=""
+# Wait for setup wizard to finish
 i=0
-while [ $i -lt 30 ]; do
-    BTMAC=$(settings get secure bluetooth_address 2>/dev/null)
-    [ -n "$BTMAC" ] && [ "$BTMAC" != "null" ] && break
-    BTMAC=""
-    sleep 3
+while [ $i -lt 120 ]; do
+    SETUP=$(settings get secure user_setup_complete 2>/dev/null)
+    [ "$SETUP" = "1" ] && break
+    sleep 2
     i=$((i + 1))
 done
 
-# Stay on while plugged (overlay type mismatch fallback)
-settings put global stay_on_while_plugged_in 7
+CONFIGURED=$(settings get global smart_speaker_configured 2>/dev/null)
+[ "$CONFIGURED" = "1" ] && exit 0
 
-# Clear default dialer/SMS roles so users can disable these apps
+sleep 10
+
+settings put global stay_on_while_plugged_in 7
+settings put secure lockscreen.disabled 0
+settings put global bluetooth_discoverable_timeout 0
 cmd role clear-role-holders android.app.role.DIALER 2>/dev/null
 cmd role clear-role-holders android.app.role.SMS 2>/dev/null
+# Whitelist BT from Doze to prevent track change interruption on screen off
+dumpsys deviceidle whitelist +com.android.bluetooth 2>/dev/null
 
-# BT name: "theloop-XXXX" using last 4 of BT MAC
-if [ -n "$BTMAC" ]; then
-    SUFFIX=$(echo "$BTMAC" | tr -d ':' | tail -c 5)
-    settings put secure bluetooth_name "theloop-$SUFFIX"
-    touch "$FLAG"
-fi
+settings put global smart_speaker_configured 1

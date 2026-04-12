@@ -2,8 +2,8 @@ on property:sys.boot_completed=1
     start smart_speaker_firstboot
 
 service smart_speaker_firstboot /system/bin/sh /vendor/etc/smart_speaker_defaults.sh
-    user system
-    group system
+    user root
+    group root
     oneshot
     disabled
     seclabel u:r:shell:s0

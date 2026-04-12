@@ -2,7 +2,7 @@
 
 import /vendor/etc/init/hw/init.project.rc
 import /vendor/etc/init/hw/init.connectivity.rc
-# DISABLED import /vendor/etc/init/hw/init.mt6877.usb.rc
+import /vendor/etc/init/hw/init.mt6877.usb.rc
 import /vendor/etc/init/hw/init.sensor_2_0.rc
 
 # init.modem.rc must be LAST - vold.post_fs_data_done is set in it

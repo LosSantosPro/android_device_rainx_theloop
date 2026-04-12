@@ -174,6 +174,7 @@ on property:sys.usb.ffs.ready=1 && property:sys.usb.config=adb && \
 property:vendor.usb.acm_enable=1 && property:sys.usb.configfs=1
     setprop vendor.usb.state ${sys.usb.config}
     write /config/usb_gadget/g1/configs/b.1/strings/0x409/configuration "adb_acm"
+    write /config/usb_gadget/g1/idVendor 0x0E8D
     write /config/usb_gadget/g1/idProduct ${vendor.usb.pid}
     write /sys/class/udc/${vendor.usb.controller}/device/saving 1
     symlink /config/usb_gadget/g1/functions/mass_storage.usb0 /config/usb_gadget/g1/configs/b.1/f1
@@ -187,6 +188,7 @@ on property:sys.usb.ffs.ready=1 && property:sys.usb.config=adb && \
 property:vendor.usb.acm_enable=0 && property:sys.usb.configfs=1
     setprop vendor.usb.state ${sys.usb.config}
     write /config/usb_gadget/g1/configs/b.1/strings/0x409/configuration "adb"
+    write /config/usb_gadget/g1/idVendor 0x0E8D
     write /config/usb_gadget/g1/idProduct ${vendor.usb.pid}
     symlink /config/usb_gadget/g1/functions/ffs.adb /config/usb_gadget/g1/configs/b.1/f1
     write /config/usb_gadget/g1/UDC ${vendor.usb.controller}
