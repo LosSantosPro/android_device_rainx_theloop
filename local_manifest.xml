@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <!-- OpenEUICC (privileged LPA) and its prebuilt dependencies.
+
+       rainx/theloop has two soldered eUICCs but no OEM LPA — stock provisions
+       profiles via a vendor-RIL OEM hook that bypasses EuiccManager, which
+       means Settings has no "Add eSIM" / "Remove eSIM" path at all on stock.
+       OpenEUICC is the FOSS EuiccService implementation (talks to eUICC over
+       OMAPI/ARA-M/SGP.22) and is the only way to get those flows working.
+
+       The privileged variant has no prebuilt release — upstream explicitly
+       documents in their README that the AOSP integration path is to add
+       this repo + its deps repo to the manifest and put `OpenEUICC` in
+       PRODUCT_PACKAGES. clone-depth=1 + sync-s=true to get submodules.
+
+       Also required:
+         - device.mk PRODUCT_PACKAGES += OpenEUICC
+         - privapp whitelist XML copied from the repo to /system_ext/etc/permissions
+         - non_removable_euicc_slots overlay (already done in
+           device/rainx/theloop/overlay/.../values/config.xml)
+  -->
+  <remote name="angry-im"
+          fetch="https://gitea.angry.im/PeterCxy/"
+          revision="master" />
+
+  <project name="OpenEUICC"
+           path="packages/apps/OpenEUICC"
+           remote="angry-im"
+           revision="master"
+           sync-s="true"
+           clone-depth="1" />
+
+  <project name="android_prebuilts_openeuicc-deps"
+           path="prebuilts/openeuicc-deps"
+           remote="angry-im"
+           revision="master"
+           clone-depth="1" />
+  <!-- MicroG — prebuilt GmsCore, GsfProxy, FakeStore, F-Droid.
+       Activated by WITH_GMS=true at build time; partner_gms.mk
+       in vendor/lineage/config/ pulls in vendor/partner_gms/
+       products/gms.mk automatically. Signature spoofing is native
+       in LineageOS 23 (ComputerEngine.java) on userdebug builds. -->
+  <project name="lineageos4microg/android_vendor_partner_gms"
+           path="vendor/partner_gms"
+           remote="github"
+           revision="master"
+           clone-depth="1" />
+</manifest>
