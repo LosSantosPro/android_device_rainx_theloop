@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">USB Speaker Mode</string>
+    <string name="summary">Use this device as a USB speaker for your PC</string>
+    <string name="usb_audio_title">USB Speaker Mode</string>
+    <string name="usb_audio_summary_off">Disabled - USB acts as normal (MTP/ADB)</string>
+    <string name="usb_audio_summary_on">Enabled - PC can play audio through this speaker</string>
+</resources>
