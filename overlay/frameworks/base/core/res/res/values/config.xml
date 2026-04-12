@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <!-- Disable task snapshots (SF crash in createScreenCaptureOutput) -->
-    <bool name="config_disableTaskSnapshots">true</bool>
+    <!-- Task snapshots enabled (was disabled for A15 SF crash, fixed in A16) -->
+    <bool name="config_disableTaskSnapshots">false</bool>
 
     <!-- Disable flip-to-screen-off (MTK sensor HAL feeds garbage accel data) -->
     <bool name="config_flipToScreenOffEnabled">false</bool>
@@ -21,6 +21,7 @@
     <!-- No vibration motor -->
     <bool name="config_hapticEdgeFeedback">false</bool>
     <bool name="config_hasVibratorAlwaysOn">false</bool>
+    <bool name="config_hasVibrator">false</bool>
 
     <!-- No camera -->
     <bool name="config_cameraDoubleTapPowerGestureEnabled">false</bool>

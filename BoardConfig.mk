@@ -154,7 +154,7 @@ SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/private
 
 # Vendor SPL pinned to stock blob patch level. Empty value breaks VINTF
 # check and Settings display. Bump only when resyncing blobs from newer OTA.
-VENDOR_SECURITY_PATCH := 2025-10-05
+VENDOR_SECURITY_PATCH := 2025-12-05
 
 # TODO: enable VINTF enforcement for A16. Currently breaks the build
 # because proprietary manifest HAL versions don't match framework matrix.

@@ -217,6 +217,9 @@ PRODUCT_PROPERTY_OVERRIDES += ro.camera.sound.forced=0
 # Battery charging control via LineageOS health HAL (Settings > Battery)
 PRODUCT_PACKAGES += vendor.lineage.health-service.default
 
+# Gallery / image viewer
+PRODUCT_PACKAGES += Glimpse
+
 # Override stock vendor init.rc with our modified version (USB VID, UAC2)
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/rootdir/etc/init.mt6877.usb.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/hw/init.mt6877.usb.rc
@@ -231,10 +234,13 @@ PRODUCT_PRODUCT_PROPERTIES += \
     ro.config.notification_vibration_intensity=0 \
     ro.config.ring_vibration_intensity=0 \
     ro.config.alarm_alert=Alarm_Classic.ogg \
-    ro.lockscreen.disable.default=true \
+    ro.lockscreen.disable.default=false \
     audio.safemedia.bypass=true \
     ro.config.hw_quickpoweron=false
 PRODUCT_PROPERTY_OVERRIDES += persist.sys.animator_duration_scale=0.5
+
+# Prevent SIM MCC from overriding locale during OOB
+PRODUCT_PROPERTY_OVERRIDES += persist.sys.locale=en-GB
 
 # Force locale to English - Chinese IoT eSIM MCC overrides during setup otherwise
 PRODUCT_LOCALES := en_GB
