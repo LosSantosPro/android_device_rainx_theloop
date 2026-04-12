@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest>
-  <remote name="rainx" fetch="https://github.com/LosSantosPro/" revision="main" />
+  <remote name="rainx" fetch="https://github.com/LosSantosPro/" revision="lineage-23.2" />
   <remote name="angry-im" fetch="https://gitea.angry.im/PeterCxy/" revision="master" />
 
   <!-- Device and vendor trees -->
