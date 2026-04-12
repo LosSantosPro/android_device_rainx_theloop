@@ -236,8 +236,8 @@ PRODUCT_PROPERTY_OVERRIDES += persist.sys.animator_duration_scale=0.5
 PRODUCT_LOCALES := en_GB
 
 # Release signing keys
-PRODUCT_DEFAULT_DEV_CERTIFICATE := $(HOME)/.android-certs/releasekey
-PRODUCT_EXTRA_RECOVERY_KEYS := $(HOME)/.android-certs/releasekey
+PRODUCT_DEFAULT_DEV_CERTIFICATE := device/rainx/theloop/.keys/releasekey
+PRODUCT_EXTRA_RECOVERY_KEYS := device/rainx/theloop/.keys/releasekey
 
 
 # USB Audio Gadget
