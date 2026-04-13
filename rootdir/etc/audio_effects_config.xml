@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Boot log fix: Removed spatializer library and effect (device has stereo speakers only) -->
 <audio_effects_conf version="2.0" xmlns="http://schemas.android.com/audio/audio_effects_conf/v2_0">
     <!-- Overview.
          This example config file was copy from existing one: frameworks/av/media/libeffects/data/
@@ -36,7 +37,6 @@
         <library name="downmix" path="libdownmixaidl.so"/>
         <library name="dynamics_processing" path="libdynamicsprocessingaidl.so"/>
         <library name="equalizersw" path="libequalizersw.so"/>
-        <library name="env_reverbsw" path="libenvreverbsw.so"/>
         <library name="haptic_generator" path="libhapticgeneratoraidl.so"/>
         <library name="loudness_enhancer" path="libloudnessenhanceraidl.so"/>
         <library name="nssw" path="libnssw_mtk.so"/>
@@ -47,7 +47,7 @@
         <library name="visualizer" path="libvisualizeraidl.so"/>
         <library name="volumesw" path="libvolumesw.so"/>
         <library name="extensioneffect" path="libextensioneffect.so"/>
-        <!-- spatializersw removed: libspatializeraidl.so does not exist on device -->
+        <!-- spatializersw removed: device has stereo speakers, spatial audio not supported -->
     </libraries>
 
     <!-- list of effects to load.
@@ -89,7 +89,7 @@
         <effect name="extension_effect" library="extensioneffect" uuid="fa81dd00-588b-11ed-9b6a-0242ac120002" type="fa81de0e-588b-11ed-9b6a-0242ac120002"/>
         <effect name="acoustic_echo_canceler" library="pre_processing" uuid="595f5152-3049-46b2-a2bc-7b15c65f4d4e"/>
         <effect name="noise_suppression" library="pre_processing" uuid="3bed20a2-5407-466c-aff0-11f7bafd5dec"/>
-        <!-- spatializer removed: references spatializersw library which does not exist -->
+        <!-- spatializer effect removed: device has stereo speakers, spatial audio not supported -->
     </effects>
 
     <preprocess>
