@@ -2,8 +2,8 @@
 # 64-bit only zygote (32-bit crashes during preload)
 ZYGOTE_FORCE_64 := true
 
-# Explicitly opt out of GMS. For GApps, use WITH_GMS=true at lunch time.
-WITH_GMS := false
+# Default no GMS. Build with: export WITH_GMS=true
+WITH_GMS ?= false
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
 # AOSP audio assets - full_base_telephony.mk ships none
