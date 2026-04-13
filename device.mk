@@ -271,7 +271,9 @@ PRODUCT_COPY_FILES += \
 # to bypass Soong module conflicts.
 PRODUCT_COPY_FILES += \
     vendor/rainx/theloop/proprietary/vendor/lib64/libtinyxml2.so:$(TARGET_COPY_OUT_VENDOR)/lib64/libtinyxml2.so \
-    vendor/rainx/theloop/proprietary/vendor/lib/libtinyxml2.so:$(TARGET_COPY_OUT_VENDOR)/lib/libtinyxml2.so
+    vendor/rainx/theloop/proprietary/vendor/lib/libtinyxml2.so:$(TARGET_COPY_OUT_VENDOR)/lib/libtinyxml2.so \
+    vendor/rainx/theloop/proprietary/vendor/lib64/libtinyxml2.so:$(TARGET_COPY_OUT_SYSTEM)/lib64/libtinyxml2.so \
+    vendor/rainx/theloop/proprietary/vendor/lib/libtinyxml2.so:$(TARGET_COPY_OUT_SYSTEM)/lib/libtinyxml2.so
 
 # Etar + Seedvault: not in common.mk (minimal), only common_mobile_full.mk
 PRODUCT_PACKAGES += \
