@@ -1007,6 +1007,8 @@ vendor/etc/usb_audio_policy_configuration.xml
 vendor/etc/vendor-apns-conf.xml
 vendor/etc/vintf/compatibility_matrix.xml
 vendor/etc/vintf/manifest.xml
+vendor/etc/vintf/manifest/android.hardware.audio.effect.service-aidl.xml
+vendor/etc/vintf/manifest/android.hardware.audio.service-aidl.xml
 vendor/etc/vintf/manifest/CommandService.xml
 vendor/etc/vintf/manifest/bluetooth_audio.xml
 vendor/etc/vintf/manifest/gnss-mtk.xml
