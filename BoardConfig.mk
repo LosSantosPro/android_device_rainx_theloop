@@ -23,9 +23,9 @@ BOARD_USES_GENERIC_KERNEL_IMAGE := false
 # console=ttyS0 removed - triggered SystemUI serial console notification
 BOARD_KERNEL_CMDLINE := bootopt=64S3,32N2,64N2 firmware_class.path=/vendor/firmware
 # SELinux enforcing (default)
-# androidboot.debuggable / androidboot.secure removed - build variant sets these
 BOARD_KERNEL_CMDLINE += androidboot.tee_type=2
 BOARD_KERNEL_CMDLINE += androidboot.usbcontroller=11201000.usb0
+# SELinux enforcing (default)
 BOARD_BOOTCONFIG :=
 # 3. BOOT HEADERS
 BOARD_BOOT_HEADER_VERSION := 4
@@ -71,11 +71,11 @@ TARGET_COPY_OUT_SYSTEM_EXT := system_ext
 TARGET_COPY_OUT_VENDOR_DLKM := vendor_dlkm
 TARGET_COPY_OUT_SYSTEM_DLKM := system_dlkm
 TARGET_COPY_OUT_ODM_DLKM := odm_dlkm
-# Filesystems - erofs (matches stock)
-BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := erofs
-BOARD_SYSTEM_EXTIMAGE_FILE_SYSTEM_TYPE := erofs
-BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := erofs
-BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := erofs
+# Filesystems - ext4 for debug (revert to erofs for release)
+BOARD_SYSTEMIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_SYSTEM_EXTIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_PRODUCTIMAGE_FILE_SYSTEM_TYPE := ext4
+BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE := ext4
 BOARD_VENDOR_DLKMIMAGE_FILE_SYSTEM_TYPE := erofs
 BOARD_SYSTEM_DLKMIMAGE_FILE_SYSTEM_TYPE := erofs
 BOARD_ODM_DLKMIMAGE_FILE_SYSTEM_TYPE := erofs
@@ -142,11 +142,8 @@ TARGET_RECOVERY_UI_MARGIN_WIDTH := 80
 -include vendor/rainx/theloop/BoardConfigVendor.mk
 SKIP_ABI_CHECKS := true
 
-# SEPolicy
+# SEPolicy - vendor overrides first, MTK prebuilt second
 BOARD_VENDOR_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor
-# Stock file_contexts auto-import. Ships after sepolicy/vendor;
-# file_contexts_bin uses last-match-wins, so lineage overrides go
-# in sepolicy/vendor/file_contexts. See vendor_mtk_prebuilt/HEADER.txt.
 BOARD_VENDOR_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/vendor_mtk_prebuilt
 SYSTEM_EXT_PRIVATE_SEPOLICY_DIRS += $(DEVICE_PATH)/sepolicy/private
 
