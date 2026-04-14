@@ -4,6 +4,7 @@
 
 vendor.usb.audio.loopback u:object_r:vendor_mtk_usb_prop:s0
 persist.vendor.usb.speaker u:object_r:vendor_mtk_usb_prop:s0
+vendor.smart_speaker.       u:object_r:vendor_default_prop:s0
 
 ctl.vendor.gsm0710muxd u:object_r:vendor_mtk_ctl_gsm0710muxd_prop:s0
 vendor.ril.ipo u:object_r:vendor_mtk_ril_ipo_prop:s0

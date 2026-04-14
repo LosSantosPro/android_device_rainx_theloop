@@ -34,5 +34,6 @@ ro.product.build.16k_page.enabled=false
 ro.product.build.no_bionic_page_size_macro=true
 ro.setupwizard.enable_bypass=true
 ro.setupwizard.rotation_locked=true
+ro.setupwizard.ignore_sim_locale=true
 setupwizard.feature.checkin_timeout_enabled=false
 

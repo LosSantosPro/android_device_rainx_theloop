@@ -1,5 +1,11 @@
 on property:sys.boot_completed=1
     start smart_speaker_firstboot
+    # MTK audio effects HAL skips init on first boot due to a race
+    # with AudioFlinger. Delayed restart forces it to reinitialize.
+    start smart_speaker_hal_fix
+
+on property:vendor.smart_speaker.hal_fix=1
+    restart audioserver
 
 service smart_speaker_firstboot /system/bin/sh /vendor/etc/smart_speaker_defaults.sh
     user root
@@ -7,3 +13,9 @@ service smart_speaker_firstboot /system/bin/sh /vendor/etc/smart_speaker_default
     oneshot
     disabled
     seclabel u:r:shell:s0
+
+service smart_speaker_hal_fix /system/bin/sh -c "sleep 5 && setprop vendor.smart_speaker.hal_fix 1"
+    user root
+    group root
+    oneshot
+    disabled
