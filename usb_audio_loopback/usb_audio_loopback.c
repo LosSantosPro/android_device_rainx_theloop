@@ -1,12 +1,4 @@
-/*
- * USB Audio Loopback - bridges UAC2 gadget capture to speaker playback.
- * Uses tinyalsa to bypass the vendor audio HAL (V2/V3 struct mismatch
- * prevents setAudioPatch from working).
- *
- * The UAC2 gadget appears as an ALSA card when a PC connects. This service
- * detects the card, opens capture on it, and writes PCM to card 0 device 0
- * (primary speaker output).
- */
+/* USB UAC2 gadget capture -> primary speaker via tinyalsa. */
 
 #include <errno.h>
 #include <stdio.h>
@@ -25,9 +17,8 @@
 #define CHANNELS         2
 #define PERIOD_SIZE      1024
 #define PERIOD_COUNT     4
-#define POLL_INTERVAL_US 500000  /* 500ms poll for UAC2 card */
+#define POLL_INTERVAL_US 500000
 
-/* Scan /proc/asound/cards for a UAC2 gadget card. Returns card number or -1. */
 static int find_uac2_card(void) {
     FILE *f = fopen("/proc/asound/cards", "r");
     if (!f) return -1;

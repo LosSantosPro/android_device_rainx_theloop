@@ -1,0 +1,16 @@
+// USB UAC2 gadget capture -> primary speaker playback via tinyalsa.
+// Started/stopped by init via vendor.usb.audio.loopback property.
+
+cc_binary {
+    name: "usb_audio_loopback",
+    srcs: ["usb_audio_loopback.c"],
+    shared_libs: [
+        "libtinyalsa",
+        "liblog",
+    ],
+    cflags: [
+        "-Werror",
+        "-Wall",
+    ],
+    vendor: true,
+}
