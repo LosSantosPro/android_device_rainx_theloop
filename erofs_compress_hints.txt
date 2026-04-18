@@ -1,0 +1,48 @@
+# erofs compression hints - 0 = no compress, larger num = more compress
+#
+# Skip files that are already compressed by their own format. Compressing
+# them again costs CPU at decode time AND usually makes them BIGGER (the
+# input is already entropy-coded, so lz4 headers add overhead with no
+# matching to find). Reducing CPU per random read also helps overall I/O
+# perf - see SQLite delay note in BoardConfig.mk.
+
+# APEX (themselves zip)
+0 *.apex
+0 *.capex
+
+# Compressed archives
+0 *.gz
+0 *.xz
+0 *.bz2
+0 *.zst
+0 *.lz4
+0 *.7z
+0 *.zip
+
+# Lossy/compressed images
+0 *.png
+0 *.jpg
+0 *.jpeg
+0 *.webp
+0 *.gif
+
+# Compressed audio
+0 *.mp3
+0 *.ogg
+0 *.opus
+0 *.m4a
+0 *.aac
+0 *.flac
+
+# Compressed video
+0 *.mp4
+0 *.webm
+0 *.mkv
+
+# Compressed/optimized fonts
+0 *.woff
+0 *.woff2
+
+# Kernel modules - mostly random data + symbol tables, poor lz4 ratio
+# (Plus some are already lz4-wrapped internally by build system.)
+0 *.ko
