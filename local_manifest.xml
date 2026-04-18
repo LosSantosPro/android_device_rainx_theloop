@@ -9,6 +9,19 @@
   <project name="android_vendor_rainx_theloop" path="vendor/rainx/theloop" remote="rainx" />
   <project name="android_kernel_rainx_theloop" path="kernel/rainx/theloop" remote="rainx" />
 
+  <!-- AOSP / LineageOS forks carrying theloop-specific patches that aren't
+       upstreamable. Each branch is "lineage-23.2-theloop" = upstream
+       lineage-23.2 + the in-flight gerrit patches we need + the local
+       theloop-only changes (codec2 HIDL drop, MTK linker shims, etc.). -->
+  <remove-project name="LineageOS/android_frameworks_av" />
+  <project name="android_frameworks_av" path="frameworks/av" remote="rainx" revision="lineage-23.2-theloop" />
+  <remove-project name="LineageOS/android_frameworks_native" />
+  <project name="android_frameworks_native" path="frameworks/native" remote="rainx" revision="lineage-23.2-theloop" />
+  <remove-project name="LineageOS/android_system_media" />
+  <project name="android_system_media" path="system/media" remote="rainx" revision="lineage-23.2-theloop" />
+  <remove-project name="platform/external/tinyxml2" />
+  <project name="android_external_tinyxml2" path="external/tinyxml2" remote="rainx" revision="lineage-23.2-theloop" />
+
   <!-- OpenEUICC (FOSS eSIM manager for dual soldered eUICCs) -->
   <project name="OpenEUICC" path="packages/apps/OpenEUICC" remote="angry-im" sync-s="true" clone-depth="1" />
   <project name="android_prebuilts_openeuicc-deps" path="prebuilts/openeuicc-deps" remote="angry-im" clone-depth="1" />
