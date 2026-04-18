@@ -2,15 +2,20 @@
 <manifest>
   <remote name="rainx" fetch="https://github.com/LosSantosPro/" revision="lineage-23.2" />
   <remote name="angry-im" fetch="https://gitea.angry.im/PeterCxy/" revision="master" />
+  <remote name="gitlab" fetch="https://gitlab.com/" />
 
-  <!-- Device and vendor trees -->
+  <!-- Device, vendor, and kernel trees -->
   <project name="android_device_rainx_theloop" path="device/rainx/theloop" remote="rainx" />
   <project name="android_vendor_rainx_theloop" path="vendor/rainx/theloop" remote="rainx" />
+  <project name="android_kernel_rainx_theloop" path="kernel/rainx/theloop" remote="rainx" />
 
   <!-- OpenEUICC (FOSS eSIM manager for dual soldered eUICCs) -->
   <project name="OpenEUICC" path="packages/apps/OpenEUICC" remote="angry-im" sync-s="true" clone-depth="1" />
   <project name="android_prebuilts_openeuicc-deps" path="prebuilts/openeuicc-deps" remote="angry-im" clone-depth="1" />
 
-  <!-- MicroG (signature spoofing native on LOS23 userdebug) -->
-  <project name="lineageos4microg/android_vendor_partner_gms" path="vendor/partner_gms" remote="github" revision="master" clone-depth="1" />
+  <!-- Full Google Play Services (MindTheGapps, baklava = Android 16).
+       Activated by WITH_GMS=true. Replaces lineageos4microg partner_gms
+       because microG's DroidGuard fallback throws NotImplementedError,
+       which broke YouTube at 60s (PoToken failure). -->
+  <project name="MindTheGapps/vendor_gapps" path="vendor/gapps" remote="gitlab" revision="baklava" clone-depth="1" />
 </manifest>
