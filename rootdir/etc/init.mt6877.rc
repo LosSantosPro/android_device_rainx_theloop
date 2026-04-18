@@ -2,7 +2,7 @@
 
 import /vendor/etc/init/hw/init.project.rc
 import /vendor/etc/init/hw/init.connectivity.rc
-import /vendor/etc/init/hw/init.mt6877.usb.rc
+# DISABLED import /vendor/etc/init/hw/init.mt6877.usb.rc
 import /vendor/etc/init/hw/init.sensor_2_0.rc
 
 # init.modem.rc must be LAST - vold.post_fs_data_done is set in it
@@ -131,3 +131,13 @@ on boot
     setprop vendor.usb.controller 11201000.usb0
     setprop sys.usb.configfs 1
     setprop sys.usb.config adb
+
+    # Backlight LED type sysfs node: A34 hwcomposer.mt6877.so writes to this
+    # at composer init to configure backlight type. Stock kernel creates the
+    # node 0644 root:root, which produces a noisy log every screen-on event:
+    #   W hwcomposer: [LEDDEV] writeIntToPath: failed to open path
+    #     [/sys/class/leds/lcd-backlight/led_type]
+    #   E hwcomposer: [BRIGHTNESS_WRAP] (32) failed to set backlight type: 6
+    # Cosmetic but spammy. Give system:graphics write access.
+    chmod 0660 /sys/class/leds/lcd-backlight/led_type
+    chown system graphics /sys/class/leds/lcd-backlight/led_type

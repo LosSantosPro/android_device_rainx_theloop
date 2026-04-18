@@ -1,6 +1,7 @@
 DEVICE_PATH := device/rainx/theloop
 DEVICE_PACKAGE_OVERLAYS += $(DEVICE_PATH)/overlay
 
+
 # MTK framework JARs on BOOTCLASSPATH (system_ext partition).
 # Required for MTK system APKs that import com.mediatek.* classes.
 # dex_import alone only stages files; BOOTCLASSPATH entry is needed
@@ -185,15 +186,16 @@ PRODUCT_PACKAGES += tinymix tinyplay tinycap tinypcminfo
 # init.rc overrides vendor.usb_gadget_default.
 PRODUCT_PACKAGES += android.hardware.usb.gadget-service.theloop
 
-# Media Codec2 IComponentStore/default stub.
-# Stock media.c2-mediatek crash-loops (missing libcodec2_hal_common.so in A15).
-# Without /default, mediaserver blocks, system_server watchdog fires, bootloop.
-# Stub registers zero components; decoding falls through to /software.
-# IMPORTANT: theloop-vendor.mk must not install the mediatek .rc - its init
-# service name collides with the stub's .rc.
+# Media Codec2 - MTK hardware video decode
 PRODUCT_PACKAGES += \
     android.hardware.media.c2-default-service \
     android.hardware.media.c2-default-seccomp_policy
+PRODUCT_COPY_FILES += \
+    vendor/rainx/theloop/proprietary/vendor/etc/init/android.hardware.media.c2-mediatek.rc:$(TARGET_COPY_OUT_VENDOR)/etc/init/android.hardware.media.c2-mediatek.rc
+
+# A34 display lib not in stock theloop vendor tree
+PRODUCT_COPY_FILES += \
+    vendor/rainx/theloop/proprietary/vendor/lib64/libhdrvideo.so:$(TARGET_COPY_OUT_VENDOR)/lib64/libhdrvideo.so
 
 # LatinIME not included by common.mk (minimal); only in common_mobile.mk
 PRODUCT_PACKAGES += LatinIME
@@ -256,11 +258,8 @@ PRODUCT_PRODUCT_PROPERTIES += \
     ro.config.hw_quickpoweron=false
 PRODUCT_PROPERTY_OVERRIDES += persist.sys.animator_duration_scale=0.5
 
-# Prevent SIM MCC from overriding locale during OOB
-PRODUCT_PROPERTY_OVERRIDES += persist.sys.locale=en-GB
-
-# Force locale to English - Chinese IoT eSIM MCC overrides during setup otherwise
-PRODUCT_LOCALES := en_GB
+# Prevent Chinese IoT eSIM MCC from overriding locale during OOBE
+PRODUCT_LOCALES := en_US
 
 # Signing: build with test keys, re-sign with private keys post-build.
 # Use: sign_target_files_apks -o -d device/rainx/theloop/.keys \
@@ -349,16 +348,6 @@ PRODUCT_COPY_FILES += \
     device/rainx/theloop/prebuilts/vendor_dlkm/c2k_usb_f_via_atc.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/c2k_usb_f_via_atc.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/c2k_usb_f_via_ets.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/c2k_usb_f_via_ets.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/c2k_usb_f_via_modem.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/c2k_usb_f_via_modem.ko \
-    device/rainx/theloop/prebuilts/vendor_dlkm/cam_qos.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/cam_qos.ko \
-    device/rainx/theloop/prebuilts/vendor_dlkm/camera_dip_isp6s.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/camera_dip_isp6s.ko \
-    device/rainx/theloop/prebuilts/vendor_dlkm/camera_dpe_isp60.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/camera_dpe_isp60.ko \
-    device/rainx/theloop/prebuilts/vendor_dlkm/camera_eeprom_isp6s_mon.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/camera_eeprom_isp6s_mon.ko \
-    device/rainx/theloop/prebuilts/vendor_dlkm/camera_fdvt_isp51.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/camera_fdvt_isp51.ko \
-    device/rainx/theloop/prebuilts/vendor_dlkm/camera_isp.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/camera_isp.ko \
-    device/rainx/theloop/prebuilts/vendor_dlkm/camera_mem.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/camera_mem.ko \
-    device/rainx/theloop/prebuilts/vendor_dlkm/camera_mfb_isp6s.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/camera_mfb_isp6s.ko \
-    device/rainx/theloop/prebuilts/vendor_dlkm/camera_rsc_isp6s.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/camera_rsc_isp6s.ko \
-    device/rainx/theloop/prebuilts/vendor_dlkm/camera_wpe_isp6s.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/camera_wpe_isp6s.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/ccci_auxadc.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/ccci_auxadc.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/ccci_ccif.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/ccci_ccif.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/ccci_cldma.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/ccci_cldma.ko \
@@ -366,7 +355,6 @@ PRODUCT_COPY_FILES += \
     device/rainx/theloop/prebuilts/vendor_dlkm/ccci_md_all.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/ccci_md_all.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/ccci_util_lib.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/ccci_util_lib.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/ccmni.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/ccmni.ko \
-    device/rainx/theloop/prebuilts/vendor_dlkm/ccu_isp6s.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/ccu_isp6s.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/cfg80211.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/cfg80211.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/clk-disable-unused.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/clk-disable-unused.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/cmdq-sec-drv.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/cmdq-sec-drv.ko \
@@ -379,7 +367,6 @@ PRODUCT_COPY_FILES += \
     device/rainx/theloop/prebuilts/vendor_dlkm/eas_ext.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/eas_ext.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/emi-mpu-test.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/emi-mpu-test.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/fhctl.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/fhctl.ko \
-    device/rainx/theloop/prebuilts/vendor_dlkm/flashlight.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/flashlight.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/fmradio_drv_connac2x.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/fmradio_drv_connac2x.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/focaltech_touch_i2c_v42.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/focaltech_touch_i2c_v42.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/fpsgo.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/fpsgo.ko \
@@ -392,14 +379,10 @@ PRODUCT_COPY_FILES += \
     device/rainx/theloop/prebuilts/vendor_dlkm/gz_tz_system.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/gz_tz_system.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/gz_virtio_mod.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/gz_virtio_mod.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/hf_manager.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/hf_manager.ko \
-    device/rainx/theloop/prebuilts/vendor_dlkm/imgsensor_isp6s_mon.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/imgsensor_isp6s_mon.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/iommu_gz.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/iommu_gz.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/leds-mt6360.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/leds-mt6360.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/legacy_gt9896s.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/legacy_gt9896s.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/mac80211.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/mac80211.ko \
-    device/rainx/theloop/prebuilts/vendor_dlkm/main2af.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/main2af.ko \
-    device/rainx/theloop/prebuilts/vendor_dlkm/main3af.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/main3af.ko \
-    device/rainx/theloop/prebuilts/vendor_dlkm/mainaf.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/mainaf.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/mcupm.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/mcupm.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/mddp.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/mddp.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/mdp_drv_mt6877.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/mdp_drv_mt6877.ko \
@@ -483,8 +466,6 @@ PRODUCT_COPY_FILES += \
     device/rainx/theloop/prebuilts/vendor_dlkm/snd-soc-mtk-common.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/snd-soc-mtk-common.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/snd-soc-mtk-scp-ultra.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/snd-soc-mtk-scp-ultra.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/snd-soc-rt5512.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/snd-soc-rt5512.ko \
-    device/rainx/theloop/prebuilts/vendor_dlkm/sub2af.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/sub2af.ko \
-    device/rainx/theloop/prebuilts/vendor_dlkm/subaf.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/subaf.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/task_turbo.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/task_turbo.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/thermal_monitor.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/thermal_monitor.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/touch_boost.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/touch_boost.ko \
@@ -492,7 +473,6 @@ PRODUCT_COPY_FILES += \
     device/rainx/theloop/prebuilts/vendor_dlkm/trusted_mem.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/trusted_mem.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/tui-common.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/tui-common.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/usb_boost.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/usb_boost.ko \
-    device/rainx/theloop/prebuilts/vendor_dlkm/v4l2-flash-led-class.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/v4l2-flash-led-class.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/widevine_driver.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/widevine_driver.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/wlan_drv_gen4m_6877.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/wlan_drv_gen4m_6877.ko \
     device/rainx/theloop/prebuilts/vendor_dlkm/wmt_chrdev_wifi_connac2.ko:$(TARGET_COPY_OUT_VENDOR_DLKM)/lib/modules/wmt_chrdev_wifi_connac2.ko

@@ -1,6 +1,23 @@
 # USB
 vendor.usb.vid=0x0E8D
 
+# MTK platform flags — present on stock A15 theloop, adding to align feature
+# detection in MTK components. Audit-driven additions (see device audit notes).
+# Omitted from this list intentionally: persist.vendor.mtk.v{ilte,iwifi,onr,inr}.enable,
+# persist.vendor.mtk.wfc.enable — our port uses the legacy vilte_support / viwifi_support
+# forms set to 0 to prevent vtservice crash-loop; do not switch to new-form keys
+# until vtservice stability investigated. persist.vendor.mtk.volte.enable=1 is
+# already set elsewhere.
+ro.vendor.mtk_cta_set=1
+ro.vendor.mtk_omacp_support=1
+ro.vendor.mtk_telephony_add_on_policy=0
+ro.vendor.mtk_model=0
+ro.vendor.mtk_flv_playback_support=1
+persist.vendor.mtk.aee.mode=4
+persist.vendor.mtk.aeev.mode=4
+persist.vendor.audiohal.besloudness_state=0
+# persist.vendor.connsys.chipid updated in-place below (was -1, now 0x6877)
+
 # Audio
 aaudio.mmap_exclusive_policy=2
 aaudio.mmap_policy=2
@@ -322,7 +339,7 @@ persist.vendor.camera3.pipeline.bufnum.min.low_ram.imgo=5
 persist.vendor.camera3.pipeline.bufnum.min.low_ram.lcso=6
 persist.vendor.camera3.pipeline.bufnum.min.low_ram.rrzo=5
 persist.vendor.camera3.pipeline.bufnum.min.low_ram.rsso=5
-persist.vendor.connsys.chipid=-1
+persist.vendor.connsys.chipid=0x6877
 persist.vendor.connsys.dynamic.dump=0
 persist.vendor.connsys.fm_chipid=mt6635
 persist.vendor.connsys.patch.version=-1
