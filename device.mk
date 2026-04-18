@@ -85,6 +85,23 @@ PRODUCT_COPY_FILES += \
 # APN database - full_base_telephony.mk ships no APN file
 PRODUCT_COPY_FILES += \
     device/sample/etc/apns-full-conf.xml:$(TARGET_COPY_OUT_PRODUCT)/etc/apns-conf.xml
+
+# Widevine L1 /system/lib*/ copies removed — proven inert (/proc/*/maps check
+# showed nothing loads them). L1 on theloop requires keybox deployment via
+# /vendor/bin/kph -c import_widevine_keybox, NOT Samsung's OPK-style
+# liboemcrypto.so. The /vendor/lib*/ copies stay in vendor blobs until we
+# revisit L1 with a keybox in hand.
+
+# Exclude MindTheGapps's Google SetupWizard even when WITH_GMS=true:
+#   - AOSP's handheld_system_ext.mk pulls in `Provision` package
+#   - MindTheGapps arm64/Android.bp declares SetupWizard with
+#     overrides: ["Provision"], which silently substitutes it in
+#   - MindTheGapps SetupWizard binds SetupCompatService.BIND on the
+#     (non-installed) com.google.android.setupcompat APK, OOBE crashes
+#   - LineageSetupWizard ALSO overrides Provision AND statically links
+#     setupcompat/setupdesign (no external dep needed). Works cleanly.
+# Exclude the Google one; LineageSetupWizard wins the override race.
+PRODUCT_PACKAGES_EXCLUDE += SetupWizard
 # ==============================================================================
 # KERNEL MODULES
 # ==============================================================================

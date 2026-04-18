@@ -1,24 +1,30 @@
-# Inherit from those products. Most specific first.
 # 64-bit only zygote (32-bit crashes during preload)
 ZYGOTE_FORCE_64 := true
 
-# Default no GMS. Build with: export WITH_GMS=true
-WITH_GMS ?= false
+# MindTheGapps (baklava/A16). WITH_GMS_VARIANT=core picks the YouTube+Play
+# Store+Play-Integrity subset (gms_core.mk); =full inherits arm64-vendor.mk.
+WITH_GMS ?= true
+WITH_GMS_VARIANT ?= core
+
 $(call inherit-product, $(SRC_TARGET_DIR)/product/core_64_bit.mk)
 $(call inherit-product, $(SRC_TARGET_DIR)/product/full_base_telephony.mk)
-# AOSP audio assets - full_base_telephony.mk ships none
 $(call inherit-product-if-exists, frameworks/base/data/sounds/AllAudio.mk)
-# LineageOS common config
 $(call inherit-product, vendor/lineage/config/common.mk)
-# Device config
+
+ifeq ($(WITH_GMS),true)
+    ifeq ($(WITH_GMS_VARIANT),full)
+        $(call inherit-product, vendor/gapps/arm64/arm64-vendor.mk)
+    else
+        $(call inherit-product, device/rainx/theloop/gms_core.mk)
+    endif
+endif
+
 $(call inherit-product, device/rainx/theloop/device.mk)
-# Vendor blobs
 $(call inherit-product, vendor/rainx/theloop/theloop-vendor.mk)
-# Product Info
+
 PRODUCT_NAME := lineage_theloop
 PRODUCT_DEVICE := theloop
 PRODUCT_BRAND := rainx
 PRODUCT_MODEL := theloop
 PRODUCT_MANUFACTURER := rainx
-# Platform
 PRODUCT_PLATFORM := mt6877
