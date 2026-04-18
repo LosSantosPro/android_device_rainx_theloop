@@ -124,3 +124,21 @@ allow system_app fm_device:chr_file { ioctl open read write };
 
 # OpenEUICC (platform_app) needs to find the secure element service for eSIM
 allow platform_app secure_element_service:service_manager find;
+
+
+# --- mediacodec reads vendor_mtk_c2_log_prop (prevents HAL restart loop every 5s) ---
+# Required by A34 MTK C2 codec HAL for log level control
+get_prop(mediacodec, vendor_mtk_c2_log_prop)
+
+
+# --- c2-mediatek (mediacodec domain) needs MTK Picture Quality service ---
+# HDR/colorspace conversion for VP9 Profile 2, HDR10, HLG content goes through
+# vendor.mediatek.hardware.pq_aidl.IPictureQuality_AIDL/default. Without this
+# allow, the find() denial leaves the codec without a colorspace conversion
+# matrix and YUV frames render as solid green (missing Y'CbCr -> RGB transform).
+# Plain SDR Rec.709 content unaffected because it doesn't query PQ.
+allow mediacodec mtk_vendor_service:service_manager find;
+
+# (custom_version_prop denial is cosmetic spam but the type is private to
+# system sepolicy and not visible from vendor; can't allow it from here.
+# Harmless — codec init falls back to defaults.)

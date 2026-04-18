@@ -172,6 +172,18 @@ persist.vendor.mtk_sim_switch_policy   u:object_r:vendor_mtk_default_prop:s0
 vendor.audio.                          u:object_r:vendor_mtk_default_prop:s0
 ro.vendor.mtk_emmc_support u:object_r:vendor_mtk_emmc_support_prop:s0
 ro.vendor.connsys.dedicated.log u:object_r:vendor_mtk_default_prop:s0
+
+# Connectivity boot-time properties read by init.bt_drv.rc / init.wlan_drv.rc
+# to expand insmod paths. Without these mappings they fall into
+# vendor_default_prop which init cannot read -> ${ro.vendor.bt.platform}
+# expands to empty -> insmod tries to load bt_drv_.ko which doesn't exist
+# -> bt_drv_6877.ko never loads, /proc/stpbt/ never appears, /dev/stpbt unusable.
+# Same chain for wlan_drv_gen4m_6877.ko via ro.vendor.wlan.gen / .chrdev.
+ro.vendor.bt.platform            u:object_r:vendor_mtk_default_prop:s0
+ro.vendor.wlan.gen               u:object_r:vendor_mtk_default_prop:s0
+ro.vendor.wlan.chrdev            u:object_r:vendor_mtk_default_prop:s0
+ro.vendor.wlan.standalone.log    u:object_r:vendor_mtk_default_prop:s0
+ro.vendor.fm.platform            u:object_r:vendor_mtk_default_prop:s0
 vendor.em.usb.       u:object_r:vendor_mtk_em_usb_prop:s0
 vendor.usb.port.mode u:object_r:vendor_mtk_em_usb_prop:s0
 persist.vendor.usb.otg.switch u:object_r:vendor_mtk_usb_otg_switch_prop:s0

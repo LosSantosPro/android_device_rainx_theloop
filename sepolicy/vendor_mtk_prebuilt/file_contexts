@@ -116,7 +116,7 @@
 /(vendor|system/vendor)/bin/hw/android\.hardware\.boot-service.mtk u:object_r:hal_bootctl_default_exec:s0
 /(vendor|system/vendor)/bin/hw/android\.hardware\.nfc@1\.2-service-st                 u:object_r:hal_nfc_default_exec:s0
 /(vendor|system/vendor)/bin/hw/android\.hardware\.weaver-service\.nxp          u:object_r:hal_weaver_default_exec:s0
-/(vendor|system/vendor)/bin/hw/android\.hardware\.media\.c2.*-mediatek                      u:object_r:mtk_hal_c2_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.media\.c2.*-mediatek                      u:object_r:mediacodec_exec:s0
 /(vendor|system/vendor)/bin/hw/vendor\.mediatek\.hardware\.mms-service              u:object_r:mtk_hal_mms_exec:s0
 /(vendor|system/vendor)/bin/hw/vendor\.mediatek\.hardware\.gnss-service            u:object_r:mtk_hal_batching_exec:s0
 /(vendor|system/vendor)/bin/hw/android\.hardware\.gnss-service\.mediatek                    u:object_r:mtk_hal_gnss_exec:s0
@@ -127,7 +127,7 @@
 /(vendor|system/vendor)/bin/hw/android\.hardware\.weaver@1\.0-service.nxp          u:object_r:hal_weaver_default_exec:s0
 /(vendor|system/vendor)/bin/hw/android\.hardware\.thermal@2\.0-service\.mtk        u:object_r:hal_thermal_default_exec:s0
 /(vendor|system/vendor)/bin/hw/android\.hardware\.lights-service\.mediatek                  u:object_r:mtk_hal_light_exec:s0
-/(vendor|system/vendor)/bin/hw/android\.hardware\.media\.c2.*-mediatek-64b                  u:object_r:mtk_hal_c2_exec:s0
+/(vendor|system/vendor)/bin/hw/android\.hardware\.media\.c2.*-mediatek-64b                  u:object_r:mediacodec_exec:s0
 /(vendor|system/vendor)/bin/hw/vendor\.mediatek\.hardware\.gpuserv-service                  u:object_r:mtk_hal_gpuserv_exec:s0
 /(vendor|system/vendor)/bin/hw/vendor\.mediatek\.hardware\.pq_aidl-service u:object_r:mtk_hal_pq_exec:s0
 /(vendor|system/vendor)/bin/hw/vendor\.mediatek\.hardware\.mmagent-service u:object_r:mtk_hal_mmagent_exec:s0
